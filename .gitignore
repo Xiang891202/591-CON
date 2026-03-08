@@ -1,0 +1,16 @@
+﻿# 依賴資料夾
+node_modules/
+backend/node_modules/
+frontend/node_modules/
+
+# 環境變數檔案
+.env
+backend/.env
+frontend/.env
+
+# 系統檔案
+.DS_Store
+Thumbs.db
+
+# 日誌檔案
+*.log
