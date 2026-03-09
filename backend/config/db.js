@@ -1,12 +1,13 @@
 // config/db.js
 const mongoose = require('mongoose');
+const logger = require('../utils/logger')
 
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI);
-    console.log(`✅ MongoDB 連線成功: ${conn.connection.host}`);
+    logger.info(`✅ MongoDB 連線成功: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`❌ 資料庫連線失敗: ${error.message}`);
+    logger.error(`❌ 資料庫連線失敗: ${error.message}`);
     process.exit(1); // 連線失敗直接結束程序
   }
 };
