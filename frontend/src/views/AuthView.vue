@@ -35,7 +35,7 @@
 import { ref } from 'vue';
 // ⚠️ 你需要自行引入 authStore 和 router
 import { useAuthStore } from '../store/authStore';
-import { useRouter } from 'vue-router';
+import { useRouter , useRoute } from 'vue-router';
 
 const isLoginMode = ref(true);
 const name = ref('');
@@ -53,6 +53,7 @@ const toggleMode = () => {
 
 const authStore = useAuthStore();
 const router = useRouter();
+const route = useRoute();
 
 // 表單驗證
 const validateForm = () => {
@@ -109,7 +110,9 @@ const handleLogin = async () => {
   }
   try {
     await authStore.login(email.value, password.value);
-    router.push('/');
+    // 取得 redirect 參數，若無則預設跳轉到 '/profile'
+    const redirectPath = route.query.redirect || '/profile';
+    router.push(redirectPath); // 登入成功後跳轉到指定頁面
   } catch (err) {
     errorMsg.value = '登入失敗，請檢查您的帳號密碼';
   }
@@ -124,7 +127,9 @@ const handleRegister = async () => {
   }
   try {
     await authStore.register({ name: name.value, email: email.value, password: password.value });
-    router.push('/');
+    // 取得 redirect 參數，若無則預設跳轉到 '/profile'
+    const redirectPath = route.query.redirect || '/profile';
+    router.push(redirectPath); // 註冊成功後跳轉到指定頁面
   } catch (err) {
     errorMsg.value = '註冊失敗，請稍後再試';
   }

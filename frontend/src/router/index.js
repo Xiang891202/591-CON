@@ -10,7 +10,9 @@ const routes = [
   { path: '/map', name: 'map', component: MapView },
   { path: '/auth', name: 'auth', component: AuthView },
   // ⚠️ 若有需要登入才能訪問的頁面，可在此加入 meta: { requiresAuth: true }
-  { path: '/profile', name: 'profile', component: ProfileView, meta: { requiresAuth: true } }
+  { path: '/profile', name: 'profile', component: ProfileView, meta: { requiresAuth: true } },
+  // 加入以下路由
+  { path: '/favorites', name: 'favorites', component: () => import('../views/FavoritesView.vue'), meta: { requiresAuth: true } }
 ];
 
 const router = createRouter({

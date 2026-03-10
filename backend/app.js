@@ -11,6 +11,7 @@ const app = express()
 
 app.use(cors()) // 允許跨域（開發用）
 app.use(express.json())
+app.use('/api/favorites', require('./routes/favoriteRoutes'));
 
 app.get('/', (req, res) => {
   res.send('🚀 後端 API 伺服器運作中，請使用 /api 相關端點');
