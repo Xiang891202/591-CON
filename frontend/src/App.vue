@@ -6,7 +6,9 @@
       <router-link to="/map">地圖找房</router-link> |
       <!-- ⚠️ 你需要自行實作：根據登入狀態顯示使用者名稱/登出按鈕 或 登入連結 -->
       <template v-if="authStore.isLoggedIn"> <!-- 此處需改為實際登入狀態 -->
-        <span>👤 {{ authStore.user?.name }}</span> |
+        <router-link to="/profile" class="profile-link">
+          👤 {{ authStore.user?.name }}
+        </router-link > |
         <button @click="handleLogout">登出</button>
       </template>
       <template v-else>
@@ -52,6 +54,10 @@ nav a {
 nav button {
   margin-left: 0.5rem;
   padding: 0.2rem 0.5rem;
+  cursor: pointer;
+}
+.profile-link {
+  font-weight: bold;
   cursor: pointer;
 }
 </style>

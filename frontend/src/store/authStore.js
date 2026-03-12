@@ -53,7 +53,11 @@ export const useAuthStore = defineStore('auth', {
       try {
         const { data } = await api.post('/auth/register', userData);
         if (data.success) {
-          this.user = data.data.user;
+          if(data.data?.token){
+            this.user = data.data.user;
+            this.token = data.data.token;
+            localStorage.setItem('token', data.data.token);
+          }
           // this.token = data.data.token;
           // localStorage.setItem('token', data.data.token);
         }
@@ -77,6 +81,7 @@ export const useAuthStore = defineStore('auth', {
     // ⚠️ 你需要自行實作 fetchMe（取得目前使用者）
     async fetchMe() {
       // 呼叫 api.get('/auth/users/me')
+      if(!this.token) return; // 沒有 token 就不呼叫 API
       try {
         const { data } = await api.get('/auth/users/me');
         console.log('fetchMe response:', data);
