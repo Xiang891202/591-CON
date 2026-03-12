@@ -5,7 +5,7 @@ const { successResponse } = require('../utils/responseHelper');
 // @desc    取得當前用戶的收藏列表
 // @route   GET /api/favorites
 exports.getFavorites = asyncHandler(async (req, res) => {
-  const favorites = await favoriteService.getUserFavorites(req.user.id);
+  const favorites = await favoriteService.getUserFavorites(req.user._id);
   res.json(successResponse({ favorites }, '取得收藏列表成功'));
 });
 
@@ -16,7 +16,7 @@ exports.addFavorite = asyncHandler(async (req, res) => {
   if (!productId) {
     return res.status(400).json({ success: false, message: '請提供商品 ID' });
   }
-  const favorite = await favoriteService.addFavorite(req.user.id, productId);
+  const favorite = await favoriteService.addFavorite(req.user._id, productId);
   res.status(201).json(successResponse({ favorite }, '收藏成功'));
 });
 
@@ -24,7 +24,7 @@ exports.addFavorite = asyncHandler(async (req, res) => {
 // @route   DELETE /api/favorites/:productId
 exports.removeFavorite = asyncHandler(async (req, res) => {
   const { productId } = req.params;
-  const result = await favoriteService.removeFavorite(req.user.id, productId);
+  const result = await favoriteService.removeFavorite(req.user._id, productId);
   if (!result) {
     return res.status(404).json({ success: false, message: '收藏不存在' });
   }
@@ -35,6 +35,6 @@ exports.removeFavorite = asyncHandler(async (req, res) => {
 // @route   GET /api/favorites/check/:productId
 exports.checkFavorite = asyncHandler(async (req, res) => {
   const { productId } = req.params;
-  const isFav = await favoriteService.isFavorited(req.user.id, productId);
+  const isFav = await favoriteService.isFavorited(req.user._id, productId);
   res.json(successResponse({ isFavorited: isFav }));
 });

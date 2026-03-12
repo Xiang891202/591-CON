@@ -25,7 +25,12 @@ const authStore = useAuthStore();
 const productStore = useProductStore();
 
 // 在 computed 中透過 props.product 存取
-const isFavorited = computed(() => productStore.isFavorited(props.product._id));
+const isFavorited = computed(() => {
+
+  //讀取 favorites 確保 cpmputed 依賴
+  console.log('🔄 isFavorited 重新計算, favorites 長度:', productStore.favorites.length);
+  return productStore.isFavorited(props.product._id);
+});
 
 const handleFavoriteClick = async () => {
   if (!authStore.isLoggedIn) {

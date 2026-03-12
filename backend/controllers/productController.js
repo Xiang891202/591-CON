@@ -100,3 +100,22 @@ exports.deleteProduct = asyncHandler(async (req, res) => {
   }
   res.json(successResponse({ message: '商品已刪除' }));
 });
+
+//////////////////////////////////////////////////////////
+
+// @desc    取得商品屬性列表（供地圖篩選使用）
+// 在檔案最後面加入
+exports.getPropertiesInBounds = asyncHandler(async (req, res) => {
+  const { minLat, maxLat, minLng, maxLng } = req.query;
+  // 簡單驗證
+  if (!minLat || !maxLat || !minLng || !maxLng) {
+    return res.status(400).json({ success: false, message: '缺少經緯度範圍參數' });
+  }
+  const properties = await productService.getPropertiesInBounds({
+    minLat: parseFloat(minLat),
+    maxLat: parseFloat(maxLat),
+    minLng: parseFloat(minLng),
+    maxLng: parseFloat(maxLng)
+  });
+  res.json(successResponse(properties, '取得地圖物件成功'));
+});

@@ -7,7 +7,9 @@
       <form @submit.prevent="handleLogin">
         <input v-model="email" type="email" placeholder="Email" required />
         <input v-model="password" type="password" placeholder="密碼" required />
-        <button type="submit">登入</button>
+        <button type="submit" :disabled="authStore.loading">
+          {{ authStore.loading ? '登入中...' : '登入' }}
+        </button>
       </form>
       <p>
         還沒有帳號？
@@ -20,7 +22,9 @@
         <input v-model="name" type="text" placeholder="姓名" required />
         <input v-model="email" type="email" placeholder="Email" required />
         <input v-model="password" type="password" placeholder="密碼" required />
-        <button type="submit">註冊</button>
+        <button type="submit" :disabled="authStore.loading">
+          {{ authStore.loading ? '註冊中...' : '註冊' }}
+        </button>
       </form>
       <p>
         已經有帳號？
@@ -111,7 +115,7 @@ const handleLogin = async () => {
   try {
     await authStore.login(email.value, password.value);
     // 取得 redirect 參數，若無則預設跳轉到 '/profile'
-    const redirectPath = route.query.redirect || '/profile';
+    const redirectPath = route.query.redirect || '/';
     router.push(redirectPath); // 登入成功後跳轉到指定頁面
   } catch (err) {
     errorMsg.value = '登入失敗，請檢查您的帳號密碼';

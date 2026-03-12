@@ -1,3 +1,5 @@
+console.log('✅ favoriteRoutes 已載入');
+
 const express = require('express');
 const router = express.Router();
 const {
@@ -17,5 +19,9 @@ router.get('/', getFavorites);
 router.post('/', addFavorite);
 router.delete('/:productId', removeFavorite);
 router.get('/check/:productId', checkFavorite);
+
+router.get('/test', (req, res) => {
+  res.json({ message: 'favoriteRoutes 工作正常' });
+});
 
 module.exports = router;

@@ -21,35 +21,41 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     user: null,
     token: localStorage.getItem('token') || null,
+    loading: false,
   }),
   actions: {
     // ⚠️ 你需要自行實作 login API 呼叫
     async login(email, password) {
+      this.loading = true;
       // 呼叫 api.post('/auth/login', { email, password })
       try {
         const { data } = await api.post('/auth/login', { email, password });
         // 處理回應，儲存 user 和 token
         if (data.success) {
-          this.user = data.user;
-          this.token = data.token;
-          localStorage.setItem('token', data.token);
+          const { user, token } = data.data; // 假設後端回傳的 user 和 token 在 data.data 中
+          this.user = user;
+          this.token = token;
+          localStorage.setItem('token', token);
         }
         return data;
       } catch (error) {
         // 處理錯誤（例如顯示錯誤訊息）
         console.error('Login failed:', error);
         throw error;
+      } finally {
+        this.loading = false;
       }
     },
     // ⚠️ 你需要自行實作 register API 呼叫
     async register(userData) {
+      this.loading = true;
       // 呼叫 api.post('/auth/register', userData)
       try {
         const { data } = await api.post('/auth/register', userData);
         if (data.success) {
-          this.user = data.user;
-          this.token = data.token;
-          localStorage.setItem('token', data.token);
+          this.user = data.data.user;
+          // this.token = data.data.token;
+          // localStorage.setItem('token', data.data.token);
         }
         // 處理回應（例如顯示成功訊息或自動登入）
         return data;
@@ -57,6 +63,8 @@ export const useAuthStore = defineStore('auth', {
         // 處理錯誤（例如顯示錯誤訊息）
         console.error('Registration failed:', error);
         throw error;
+      } finally {
+        this.loading = false;
       }
     },
     // ⚠️ 你需要自行實作 logout

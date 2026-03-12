@@ -7,7 +7,7 @@ import ProfileView from '../views/ProfileView.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
-  { path: '/map', name: 'map', component: MapView },
+  { path: '/map', name: 'MapView', component: () => import('../views/MapView.vue') },
   { path: '/auth', name: 'auth', component: AuthView },
   // ⚠️ 若有需要登入才能訪問的頁面，可在此加入 meta: { requiresAuth: true }
   { path: '/profile', name: 'profile', component: ProfileView, meta: { requiresAuth: true } },

@@ -51,3 +51,19 @@ exports.updateProduct = async (id, updateData) => {
 exports.deleteProduct = async (id) => {
   return await Product.findByIdAndDelete(id);
 };
+
+/////////////////////////////////////////
+
+//地圖找房
+// 在檔案最後面加入（或取代您寫的 getProductProperties）
+exports.getPropertiesInBounds = async (bounds) => {
+  const { minLat, maxLat, minLng, maxLng } = bounds;
+  console.log('🔍 查詢範圍:', { minLat, maxLat, minLng, maxLng });
+  const query = {
+    lat: { $gte: minLat, $lte: maxLat },
+    lng: { $gte: minLng, $lte: maxLng }
+  };
+  const results = await Product.find(query).select('name lat lng price images');
+  console.log(`📦 找到 ${results.length} 筆商品`);
+  return results;
+};

@@ -28,6 +28,14 @@ const productSchema = new mongoose.Schema(
     },
     images: [String],
     // 可依需求擴充欄位
+    lat: {
+      type: Number,
+      required: [true, '緯度不能為空'],
+    },
+    lng: {
+      type: Number,
+      required: [true, '經度不能為空'],
+    },
   },
   {
     timestamps: true,

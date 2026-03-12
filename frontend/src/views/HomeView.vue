@@ -14,10 +14,10 @@
 
 <script setup>
 import { onMounted } from 'vue'
-import { useProductStore } from '../store/productStore'
+import { useProductStore } from '@/store/productStore'
 import FilterBar from '../components/FilterBar.vue'
 import ProductCard from '../components/ProductCard.vue'
-import { useAuthStore } from '../store/authStore'
+import { useAuthStore } from '@/store/authStore'
 
 const productStore = useProductStore()
 const authStore = useAuthStore()
@@ -35,6 +35,8 @@ onMounted(async () => {
     await productStore.fetchFavorites();
   }
 });
+
+
 
 const handleFilter = (filters) => {
   // 將篩選條件傳給 store，由 store 呼叫 API 取得新資料
