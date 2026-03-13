@@ -11,9 +11,16 @@ const userSchema = new mongoose.Schema({
 // 密碼加密 (儲存前)
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next()
-  const salt = await bcrypt.genSalt(10)
-  this.password = await bcrypt.hash(this.password, salt)
-  next()
+  try{
+    console.log('🔐 開始加密密碼') // 日誌
+    const salt = await bcrypt.genSalt(10)
+    this.password = await bcrypt.hash(this.password, salt)
+    console.log('🔐 密碼加密完成') // 日誌
+    next()
+  } catch (err) {
+    console.error('🔐 密碼加密失敗:', err) // 錯誤日誌
+    next(err)
+  }
 })
 
 // 比對密碼的方法

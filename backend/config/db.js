@@ -1,15 +1,28 @@
 // config/db.js
 const mongoose = require('mongoose');
-const logger = require('../utils/logger')
+const logger = require('../utils/logger');
+
+let isConnected = false;
 
 const connectDB = async () => {
+  console.trace('🔍 connectDB 被呼叫，追蹤堆疊：');
+  if (isConnected) {
+    logger.info('✅ 已經連線到 MongoDB，跳過重複連線');
+    return;
+  }
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
-    logger.info(`✅ MongoDB 連線成功: ${conn.connection.host}`);
+    const uri = process.env.MONGODB_URI || process.env.MONGO_URI;
+    const maskedUri = uri.replace(/:([^@]+)@/, ':****@');
+    logger.info(`⏳ 正在連線到 MongoDB: ${maskedUri}`);
+
+    await mongoose.connect(uri);
+    logger.info('✅ MongoDB 連線成功');
+    isConnected = true;
   } catch (error) {
-    logger.error(`❌ 資料庫連線失敗: ${error.message}`);
-    process.exit(1); // 連線失敗直接結束程序
+    // 🔍 直接使用 console.error 輸出完整錯誤物件
+    console.error('❌ 資料庫連線失敗（原始錯誤）:', error);
+    process.exit(1);
   }
 };
 
-module.exports = connectDB;  // 只匯出函式，不執行
+module.exports = connectDB;

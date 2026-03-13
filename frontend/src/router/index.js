@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue';
 import MapView from '../views/MapView.vue';
 import AuthView from '../views/AuthView.vue';
 import ProfileView from '../views/ProfileView.vue';
+import ProfileEditView from '@/views/ProfileEditView.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -11,8 +12,9 @@ const routes = [
   { path: '/auth', name: 'auth', component: AuthView },
   // ⚠️ 若有需要登入才能訪問的頁面，可在此加入 meta: { requiresAuth: true }
   { path: '/profile', name: 'profile', component: () => import('../views/ProfileView.vue'), meta: { requiresAuth: true } },
+  { path: '/profile/edit', name: 'profileEdit', component: ProfileEditView, meta: { requiresAuth: true } },
   // 加入以下路由
-  { path: '/favorites', name: 'favorites', component: () => import('../views/FavoritesView.vue'), meta: { requiresAuth: true } }
+  { path: '/favorites', name: 'favorites', component: () => import('../views/FavoritesView.vue'), meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({

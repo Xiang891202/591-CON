@@ -87,11 +87,27 @@ export const useAuthStore = defineStore('auth', {
         console.log('fetchMe response:', data);
         // 若成功則更新 user，失敗則登出
         if (data.success) {
-          this.user = data.user;
+          this.user = data.data.user;
         }
       } catch (error) {
         console.error('Failed to fetch user info:', error);
         this.logout();
+      }
+    },
+    async updateProfile(userData) {
+      // 呼叫 api.put('/auth/profile', userData)
+      this.loading = true;
+      try {
+        const { data } = await api.put('/auth/profile', userData);
+        if (data.success) {
+          this.user = data.data;
+        }
+        return data;
+      } catch (error) {
+        console.error('更新個人資料失敗', error);
+        throw error;
+      } finally {
+          this.loading = false;
       }
     },
   },

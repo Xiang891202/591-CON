@@ -9,9 +9,22 @@ exports.register = asyncHandler(async (req, res) => {
 })
 
 exports.login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body
-  const result = await authService.login(email, password)
-  res.json(successResponse(result, '登入成功'))
+  try {
+    const { email, password } = req.body
+    const result = await authService.login(email, password)
+    res.json(successResponse(result, '登入成功'))
+} catch (error) {
+    if (error.message === 'Invalid credentials') {
+    res.status(401).json({ success: false, message: '登入失敗' })
+  } else {
+    next (error) // 其他錯誤交由全局錯誤處理器處理
+  }  
+}
+})
+
+exports.updateProfile = asyncHandler(async (req, res) => {
+  const updatedUser = await authService.updateUser(req.user.id, req.body)
+  res.json({ success: true, data: updatedUser })
 })
 
 // controllers/authController.js (在原有內容後新增)

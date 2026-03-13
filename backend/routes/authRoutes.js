@@ -1,5 +1,5 @@
 const express = require('express')
-const { register, login } = require('../controllers/authController')
+const { register, login, updateProfile, getMe } = require('../controllers/authController')
 const { protect } = require('../middlewares/authMiddleware')
 const router = express.Router()
 
@@ -13,6 +13,7 @@ const router = express.Router()
 
 router.post('/register', register)
 router.post('/login', login)
-router.get('/users/me', protect, require('../controllers/authController').getMe) // 需要驗證的路由，確保 protect 中間件在前
+router.get('/users/me', protect, getMe); // 需要驗證的路由，確保 protect 中間件在前
+router.put('/profile',protect, updateProfile) // 更新使用者資料的路由，確保 protect 中間件在前
 
 module.exports = router

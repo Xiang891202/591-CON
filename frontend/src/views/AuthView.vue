@@ -32,11 +32,12 @@
       </p>
     </div>
     <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
+    <p v-if="message" class="info">{{ message }}</p>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 // ⚠️ 你需要自行引入 authStore 和 router
 import { useAuthStore } from '../store/authStore';
 import { useRouter , useRoute } from 'vue-router';
@@ -58,6 +59,13 @@ const toggleMode = () => {
 const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
+const message = ref('');
+
+onMounted(() => {
+  if (route.query.message) {
+    message.value = route.query.message;
+  }
+});
 
 // 表單驗證
 const validateForm = () => {

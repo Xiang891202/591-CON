@@ -1,13 +1,14 @@
 const express = require('express')
 const cors = require('cors')
 require('dotenv').config()
-// require('./config/db') // 連線資料庫
+// const connectDB = require('./config/db') // 連線資料庫
 
 const authRoutes = require('./routes/authRoutes')
 const productRoutes = require('./routes/productRoutes')
 const errorMiddleware = require('./middlewares/errorMiddleware')
 
 const app = express()
+// connectDB() // 連線資料庫
 
 app.use(cors()) // 允許跨域（開發用）
 app.use(express.json())
