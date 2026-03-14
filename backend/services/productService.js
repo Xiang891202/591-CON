@@ -4,7 +4,7 @@ const logger = require('../utils/logger');
 
 // 可擴充其他方法：getProductById, createProduct 等
 
-// 取得單一商品 by ID
+// 取得單一商品 by ID & 商品詳細頁用
 exports.getProductById = async (id) => {
   return await Product.findById(id);
 };
@@ -71,7 +71,3 @@ exports.getPropertiesInBounds = async (bounds) => {
   return results;
 };
 
-//商品詳細頁用
-exports.getProductById = async (id) => {
-  return await Product.findById(id);
-};

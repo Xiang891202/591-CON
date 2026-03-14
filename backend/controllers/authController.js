@@ -16,6 +16,7 @@ exports.login = asyncHandler(async (req, res,next) => {
 } catch (error) {
     if (error.message === 'Invalid credentials') {
     res.status(401).json({ success: false, message: '登入失敗' })
+    return
   } else {
     next (error) // 其他錯誤交由全局錯誤處理器處理
   }  

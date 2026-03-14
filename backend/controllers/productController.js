@@ -1,6 +1,7 @@
 const productService = require('../services/productService');
 const asyncHandler = require('../middlewares/asyncHandler');
 const { successResponse } = require('../utils/responseHelper');
+const logger = require('../utils/logger')
 
 // 輔助函式：將排序字串轉換為 MongoDB 排序物件
 const parseSort = (sortString) => {
@@ -12,13 +13,12 @@ const parseSort = (sortString) => {
 
 // @desc    取得單一商品（供商品詳細頁使用）& 取出商品ID
 exports.getProductById = asyncHandler(async (req, res,next) => {
-  try{
     const product = await productService.getProductById(req.params.id);
     if (!product) {
       return res.status(404).json({ success: false, message: '商品不存在' });
     }
-    res.json({ success: true, data: product, message: '取得商品資訊成功' });
-  } catch (error) {
+      res.json({ success: true, data: product, message: '取得商品資訊成功' });
+   {
     next(error);
   }
 });;
@@ -51,12 +51,12 @@ exports.getProducts = asyncHandler(async (req, res) => {
     skip: (parseInt(page) - 1) * parseInt(limit),
   };
 
-  console.log('📥 收到查詢參數:', { ...filters, page, limit, sort });
+  logger.info('📥 收到查詢參數:', { ...filters, page, limit, sort });
 
   // 呼叫 service（注意方法名稱已改為 getProducts）
   const { products, total } = await productService.getProducts(filters, options);
 
-  console.log('📤 查詢到商品數量:', products.length, '總筆數:', total);
+  logger.info('📤 查詢到商品數量:', products.length, '總筆數:', total);
 
   // 回傳統一格式，包含分頁資訊
   res.json(successResponse({

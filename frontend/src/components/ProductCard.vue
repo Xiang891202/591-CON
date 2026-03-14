@@ -34,7 +34,7 @@ const isFavorited = computed(() => {
 
 const handleFavoriteClick = async () => {
   if (!authStore.isLoggedIn) {
-    router.push('/auth');
+    router.push({ name: 'auth', query:{ redirect: router.currentRoute.value.fullPath}});
     return;
   }
   await productStore.toggleFavorite(props.product._id);

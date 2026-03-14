@@ -52,15 +52,13 @@ export const useAuthStore = defineStore('auth', {
       // 呼叫 api.post('/auth/register', userData)
       try {
         const { data } = await api.post('/auth/register', userData);
-        if (data.success) {
-          if(data.data?.token){
+        if (data.success && data.data?.token) {
             this.user = data.data.user;
             this.token = data.data.token;
             localStorage.setItem('token', data.data.token);
           }
           // this.token = data.data.token;
           // localStorage.setItem('token', data.data.token);
-        }
         // 處理回應（例如顯示成功訊息或自動登入）
         return data;
       } catch (error) {

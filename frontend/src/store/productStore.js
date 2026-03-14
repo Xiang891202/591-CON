@@ -113,21 +113,24 @@ export const useProductStore = defineStore('product', {
       this.mapBounds = bounds;
     },
 
-    async fetchMapProperties() {
-      if (!this.mapBounds.minLat) return;
-      this.mapLoading = true;
-      try {
-        const { data } = await api.get('/products/map/properties', { params: this.mapBounds });
-        // 根據後端回應結構調整（此處假設 data.data 為陣列）
-        this.mapProducts = data.data || data.properties || [];
-        // 若您希望左側商品列表與地圖顯示相同，可將 products 也指向 mapProducts
-        // this.products = this.mapProducts;
-      } catch (error) {
-        console.error('取得地圖物件失敗', error);
-      } finally {
-        this.mapLoading = false;
+  async fetchMapProperties() {
+    const { minLat, maxLat, minLng, maxLng } = this.mapBounds;
+    if (!minLat || !maxLat || !minLng || !maxLng) {
+      if (import.meta.env.DEV) {
+        console.warn('fetchMapProperties 被呼叫但 mapBounds 尚未完整初始化', this.mapBounds);
       }
-    },
+    return;
+  }
+  this.mapLoading = true;
+  try {
+    const { data } = await api.get('/products/map/properties', { params: this.mapBounds });
+    this.mapProducts = data.data || data.properties || [];
+  } catch (error) {
+    console.error('取得地圖物件失敗', error);
+  } finally {
+    this.mapLoading = false;
+  }
+},
 
     setActiveProductId(id) {
       this.activeProductId = id;

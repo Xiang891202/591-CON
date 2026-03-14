@@ -1,4 +1,6 @@
-console.log('✅ favoriteRoutes 已載入');
+const logger = require('../utils/logger')
+logger.info('✅ favoriteRoutes 已載入');
+
 
 const express = require('express');
 const router = express.Router();
