@@ -77,6 +77,10 @@ const handleSubmit = async () => {
   if (form.value.name !== authStore.user.name) {
     updateData.name = form.value.name
   }
+  if (form.value.password && form.value.password.length < 6){
+    errorMessage.value = '密碼長度至少 6 碼'
+    return
+  }
   if (form.value.password) {
     // 若有新密碼，確認一致後才加入
     if (form.value.password !== form.value.confirmPassword) {

@@ -1,22 +1,24 @@
 <template>
-  <div v-if="productStore.loading">載入中...</div>
+  <div v-if="productStore.productDetailLoading">載入中...</div>
   <div v-else-if="product" class="product-detail">
     <h1>{{ product.name }}</h1>
-    <img :src="product.image" :alt="product.name" />
+    <img :src="product.images?.[0] || '/default-image.jpg'" :alt="product.name" />
     <p>{{ product.description }}</p>
     <p>💰 {{ product.price }} 萬/月</p>
     <button 
       @click="handleToggleFavorite" 
-      :disabled="!authStore.isLoggedIn"
       :class="{ favorited: isFavorited }"
     >
       {{ isFavorited ? '❤️ 已收藏' : '🤍 加入收藏' }}
     </button>
     <p v-if="!authStore.isLoggedIn" class="login-hint">
-      <router-link to="/auth">登入</router-link> 後可使用收藏功能
+      <!-- <router-link to="/auth">登入</router-link> 後可使用收藏功能 -->
     </p>
   </div>
-  <div v-else>商品不存在</div>
+  <div v-else>
+    商品不存在
+    <router-link to="/">返回首頁</router-link>
+  </div>
 </template>
 
 <script setup>
@@ -31,16 +33,29 @@ const productStore = useProductStore();
 const authStore = useAuthStore();
 
 const product = computed(() => productStore.currentProduct);
-const isFavorited = computed(() => productStore.isFavorited(product.value?._id));
+// const isFavorited = computed(() => productStore.isFavorited(product.value?._id));
+const isFavorited = computed(() => {
+  if (!product.value?._id) return false;
+  return productStore.isFavorited(product.value._id);
+});
 
 const handleToggleFavorite = async () => {
+  if (!product.value?._id) {
+    alert('商品資料有誤，無法執行操作');
+    return;
+  }
   if (!authStore.isLoggedIn) {
-    router.push('/auth');
+    alert('尚未登入，請先登入')
+    console.log('跳轉到登入頁, redirect =', route.fullPath);
+    router.push(`/auth?redirect=${encodeURIComponent(route.fullPath)}`);
     return;
   }
   const success = await productStore.toggleFavorite(product.value._id);
   if (success) {
+    alert('收藏已更新');
     // 可選：顯示提示訊息
+  } else {
+    alert('操作失敗，請稍後再試');
   }
 };
 

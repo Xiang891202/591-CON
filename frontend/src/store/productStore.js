@@ -13,9 +13,21 @@ api.interceptors.request.use((config) => {
 export const useProductStore = defineStore('product', {
   state: () => ({
     products: [],
-    currentProduct: null,
+    // currentProduct: null,
     favorites: [],
-    loading: false,
+    // loading: false,
+    // ===== 取得單一商品用於商品詳細頁 =====
+    currentProduct: null,
+    // loading: false,
+    // error: null,
+
+    // ===== 避免loading 狀態會互相干擾 =====
+    productsLoading: false,
+    productDetailLoading: false,
+    favoritesLoading: false,
+    mapLoading: false,
+    error: null,
+
     // ===== 地圖相關狀態 =====
     mapBounds: {
       minLat: null,
@@ -30,37 +42,41 @@ export const useProductStore = defineStore('product', {
   actions: {
     // ---------- 原有 actions ----------
     async fetchProducts(params = {}) {
-      this.loading = true;
+      this.productsLoading = true;
       try {
         const { data } = await api.get('/products', { params });
         this.products = data.data?.products || data.products || [];
       } catch (error) {
         console.error('取得商品列表失敗', error);
       } finally {
-        this.loading = false;
+        this.productsLoading = false;
       }
     },
 
     async fetchProductById(id) {
-      this.loading = true;
+      this.productDetailLoading = true;
       try {
         const { data } = await api.get(`/products/${id}`);
-        this.currentProduct = data.data?.product || data.product || data;
+        this.currentProduct = data.data || data.product || data;
+        // this.currentProduct = Response.data;
       } catch (error) {
         console.error('取得商品詳細失敗', error);
       } finally {
-        this.loading = false;
+        this.productDetailLoading = false;
       }
     },
 
     async fetchFavorites() {
       const authStore = useAuthStore();
       if (!authStore.isLoggedIn) return;
+      this.favoritesLoading = true;
       try {
         const { data } = await api.get('/favorites');
         this.favorites = data.data?.favorites || data.favorites || [];
       } catch (error) {
         console.error('取得收藏列表失敗', error);
+      } finally {
+        this.favoritesLoading = false;
       }
     },
 
@@ -81,6 +97,7 @@ export const useProductStore = defineStore('product', {
       });
     } else {
       await api.post('/favorites', { productId });
+      // const newFavorite = (await api.get(`/favorites/${productId}`)).data;
       await this.fetchFavorites(); // 重新获取完整收藏列表，确保数据一致
     }
     return true;
@@ -98,6 +115,7 @@ export const useProductStore = defineStore('product', {
 
     async fetchMapProperties() {
       if (!this.mapBounds.minLat) return;
+      this.mapLoading = true;
       try {
         const { data } = await api.get('/products/map/properties', { params: this.mapBounds });
         // 根據後端回應結構調整（此處假設 data.data 為陣列）
@@ -106,6 +124,8 @@ export const useProductStore = defineStore('product', {
         // this.products = this.mapProducts;
       } catch (error) {
         console.error('取得地圖物件失敗', error);
+      } finally {
+        this.mapLoading = false;
       }
     },
 
@@ -118,7 +138,7 @@ export const useProductStore = defineStore('product', {
     isFavorited: (state) => (productId) => {
       return state.favorites.some(f => {
         const favoriteProductId = f.product?._id || f._id; 
-        console.log('🔍 比較:', favoriteProductId, productId);
+        // console.log('🔍 比較:', favoriteProductId, productId);
         return String(favoriteProductId) === String(productId);
       });
     }

@@ -21,6 +21,15 @@ const productStore = useProductStore();
 let map = null;
 let markerClusterGroup = null;
 
+//防斗
+const debounce = (fn, delay) => {
+  let timer = null;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(... args), delay);
+  };
+};
+
 // 初始化地圖
 onMounted(() => {
   map = L.map('map').setView([25.033, 121.565], 13); // 預設台北市中心
@@ -33,7 +42,7 @@ onMounted(() => {
   map.addLayer(markerClusterGroup);
 
   // 監聽地圖移動結束
-  map.on('moveend', () => {
+  map.on('moveend', debounce(() => {
     const bounds = map.getBounds();
     productStore.setMapBounds({
       minLat: bounds.getSouth(),
@@ -42,7 +51,7 @@ onMounted(() => {
       maxLng: bounds.getEast()
     });
     productStore.fetchMapProperties();
-  });
+  }, 500)); // 500ms 防斗
 
   // 初始抓取一次
   setTimeout(() => {

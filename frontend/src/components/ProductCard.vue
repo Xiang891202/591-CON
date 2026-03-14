@@ -1,10 +1,10 @@
 <template>
-  <div class="product-card">
-    <img :src="product.image" :alt="product.name" />
+  <div class="product-card" @click="goToDetail">
+    <img :src="product.images?.[0] || '/default-image.jpg'" :alt="product.name" />
     <h3>{{ product.name }}</h3>
     <p>💰 {{ product.price }} 萬/月</p>
     <!-- 收藏按鈕先隱藏，待後端實作後再啟用 -->
-    <button @click="handleFavoriteClick" :class="{ favorited: isFavorited }">
+    <button @click.stop="handleFavoriteClick" :class="{ favorited: isFavorited }">
       {{ isFavorited ? '❤️' : '🤍' }}
     </button>
   </div>
@@ -28,7 +28,7 @@ const productStore = useProductStore();
 const isFavorited = computed(() => {
 
   //讀取 favorites 確保 cpmputed 依賴
-  console.log('🔄 isFavorited 重新計算, favorites 長度:', productStore.favorites.length);
+  // console.log('🔄 isFavorited 重新計算, favorites 長度:', productStore.favorites.length);
   return productStore.isFavorited(props.product._id);
 });
 
@@ -38,6 +38,11 @@ const handleFavoriteClick = async () => {
     return;
   }
   await productStore.toggleFavorite(props.product._id);
+};
+
+//點擊事件 到 商品詳細頁
+const goToDetail = () => {
+  router.push(`/product/${props.product._id}`);
 };
 
 </script>

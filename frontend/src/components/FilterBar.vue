@@ -9,12 +9,13 @@
     />
 
     <!-- 類別篩選 -->
-    <select v-model="filters.category" @change="emitFilter">
-      <option value="">所有類別</option>
-      <option value="公寓">公寓</option>
-      <option value="套房">套房</option>
-      <option value="雅房">雅房</option>
-    </select>
+  <select v-model="filters.category" @change="emitFilter">
+    <option value="">所有類別</option>
+    <option value="apartment">公寓</option>
+    <option value="house">套房</option>
+  <!-- 若後端沒有「雅房」資料，可先保留但不會有結果 -->
+    <option value="room">雅房</option>
+  </select>
 
     <!-- 價格範圍 -->
     <input
@@ -74,9 +75,9 @@ const goToFavorites = () => {
   if (authStore.isLoggedIn) {
     router.push({ name: 'favorites' });
   } else {
-    alert('請先登入才能查看收藏列表');    
+    // alert('請先登入才能查看收藏列表');    
     // ⭐ 你需要自行決定 redirect 參數，這裡傳入 'favorites' 或完整路徑
-    router.push({ name: 'auth', query: { redirect: '/favorites' } });
+    router.push({ name: 'auth', query: { redirect: router.currentRoute.value.fullPath } });
   }
 };
 
@@ -92,21 +93,7 @@ const goToFavorites = () => {
   background: #f5f5f5;
   border-radius: 8px;
 }
-.filter-bar input,
-.filter-bar select {
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-.filter-bar {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-  padding: 10px;
-  background: #f5f5f5;
-  border-radius: 8px;
-}
+
 .filter-bar input,
 .filter-bar select,
 .filter-bar button {

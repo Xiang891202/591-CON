@@ -8,7 +8,7 @@ exports.register = asyncHandler(async (req, res) => {
   res.status(201).json(successResponse(result, '註冊成功'))
 })
 
-exports.login = asyncHandler(async (req, res) => {
+exports.login = asyncHandler(async (req, res,next) => {
   try {
     const { email, password } = req.body
     const result = await authService.login(email, password)

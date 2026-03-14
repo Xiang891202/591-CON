@@ -5,7 +5,7 @@ const logger = require('../utils/logger');
 let isConnected = false;
 
 const connectDB = async () => {
-  console.trace('🔍 connectDB 被呼叫，追蹤堆疊：');
+  // console.trace('🔍 connectDB 被呼叫，追蹤堆疊：');
   if (isConnected) {
     logger.info('✅ 已經連線到 MongoDB，跳過重複連線');
     return;
@@ -20,7 +20,7 @@ const connectDB = async () => {
     isConnected = true;
   } catch (error) {
     // 🔍 直接使用 console.error 輸出完整錯誤物件
-    console.error('❌ 資料庫連線失敗（原始錯誤）:', error);
+    logger.error('❌ 資料庫連線失敗（原始錯誤）:', error);
     process.exit(1);
   }
 };

@@ -10,20 +10,18 @@ const parseSort = (sortString) => {
   return { [sortField]: sortOrder };
 };
 
-//取出商品ID 訊息 
-exports.getProductById = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const product = await productService.getProductById(id);
-
-  if (!product) {
-    return res.status(404).json({ 
-      success: false, 
-      message: '商品不存在' 
-    });
-  } 
-
-  res.json(successResponse(product, '取得商品資訊成功'));
-});
+// @desc    取得單一商品（供商品詳細頁使用）& 取出商品ID
+exports.getProductById = asyncHandler(async (req, res,next) => {
+  try{
+    const product = await productService.getProductById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ success: false, message: '商品不存在' });
+    }
+    res.json({ success: true, data: product, message: '取得商品資訊成功' });
+  } catch (error) {
+    next(error);
+  }
+});;
 
 exports.getProducts = asyncHandler(async (req, res) => {
   // 從 req.query 取出所有參數
@@ -119,3 +117,4 @@ exports.getPropertiesInBounds = asyncHandler(async (req, res) => {
   });
   res.json(successResponse(properties, '取得地圖物件成功'));
 });
+

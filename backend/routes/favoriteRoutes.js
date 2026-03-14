@@ -20,8 +20,8 @@ router.post('/', addFavorite);
 router.delete('/:productId', removeFavorite);
 router.get('/check/:productId', checkFavorite);
 
-router.get('/test', (req, res) => {
-  res.json({ message: 'favoriteRoutes 工作正常' });
-});
+// router.get('/test', (req, res) => {
+//   res.json({ message: 'favoriteRoutes 工作正常' });
+// });
 
 module.exports = router;

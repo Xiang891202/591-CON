@@ -2,7 +2,7 @@ const { errorResponse } = require('../utils/responseHelper')
 const logger = require('../utils/logger')
 
 const errorHandler = (err, req, res, next) => {
-  logger.error('❌ 全域錯誤處理器捕獲:', err)  // 完整輸出錯誤物件
+  logger.error(`❌ 全域錯誤處理器捕獲: ${err.message}`)  // 完整輸出錯誤物件
   logger.error(err.stack)                      // 輸出堆疊
 
   const statusCode = err.statusCode || (res.statusCode !== 200 ? res.statusCode : 500) 

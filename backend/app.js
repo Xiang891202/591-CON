@@ -22,6 +22,11 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
 
+//404處理
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: '路由不存在' })
+});
+
 // 全域錯誤處理中介層（需放在所有路由之後）
 app.use(errorMiddleware)
 

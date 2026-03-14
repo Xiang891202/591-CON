@@ -1,7 +1,12 @@
 const Favorite = require('../models/Favorite');
+const Product = require('../models/Product');
 
 // 新增收藏
 const addFavorite = async (userId, productId) => {
+  const product = await Product.findById(productId);
+  if (!product) {
+    throw new Error('商品不存在');
+  }
   return await Favorite.create({ user: userId, product: productId });
 };
 

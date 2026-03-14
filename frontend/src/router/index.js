@@ -15,6 +15,7 @@ const routes = [
   { path: '/profile/edit', name: 'profileEdit', component: ProfileEditView, meta: { requiresAuth: true } },
   // 加入以下路由
   { path: '/favorites', name: 'favorites', component: () => import('../views/FavoritesView.vue'), meta: { requiresAuth: true } },
+  { path: '/product/:id', name: 'productDetail', component: () => import('@/views/ProductDetailView.vue'), props: true },
 ];
 
 const router = createRouter({
@@ -31,7 +32,7 @@ router.beforeEach((to, from, next) => {
 
   if (requiresAuth && !token) {
     // 未登入且需要權限，導向登入頁
-    next({ name: 'auth' });
+    next({ name: 'auth', query: { redirect: to.fullPath } }); // 可選：將原本想訪問的路由作為參數傳遞
   } else {
     // 其他情況正常前往
     next();

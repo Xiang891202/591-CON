@@ -34,9 +34,9 @@ exports.updateUser = async (userId, updateData) => {
   if(updateData.password !== undefined) {
     const isSame = await bcrypt.compare(updateData.password, user.password);
     if(isSame) {
-      throw new Error('新密碼不能與舊密碼相同');
+      // throw n  ew Error('新密碼不能與舊密碼相同');
+      user.password = updateData.password; // 此處賦值會觸發 pre('save') 中間件加密
     }
-    user.password = updateData.password; // 此處賦值會觸發 pre('save') 中間件加密
   }
 
   await user.save(); // 儲存更新後的使用者資料

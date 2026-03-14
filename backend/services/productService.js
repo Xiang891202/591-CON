@@ -1,6 +1,6 @@
 
 const Product = require('../models/Product');
-
+const logger = require('../utils/logger');
 
 // 可擴充其他方法：getProductById, createProduct 等
 
@@ -58,12 +58,20 @@ exports.deleteProduct = async (id) => {
 // 在檔案最後面加入（或取代您寫的 getProductProperties）
 exports.getPropertiesInBounds = async (bounds) => {
   const { minLat, maxLat, minLng, maxLng } = bounds;
-  console.log('🔍 查詢範圍:', { minLat, maxLat, minLng, maxLng });
+  logger.info('🔍 查詢範圍:', { minLat, maxLat, minLng, maxLng });
+  if([minLat, maxLat, minLng, maxLng].some(v =>v === undefined || isNaN(v))) {
+    throw new Error('無效的經緯度範圍');
+  }
   const query = {
     lat: { $gte: minLat, $lte: maxLat },
     lng: { $gte: minLng, $lte: maxLng }
   };
   const results = await Product.find(query).select('name lat lng price images');
-  console.log(`📦 找到 ${results.length} 筆商品`);
+  logger.info(`📦 找到 ${results.length} 筆商品`);
   return results;
+};
+
+//商品詳細頁用
+exports.getProductById = async (id) => {
+  return await Product.findById(id);
 };

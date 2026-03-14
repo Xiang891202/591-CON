@@ -116,7 +116,6 @@ const validateForm = () => {
 
 // ⚠️ 你需要自行實作 handleLogin（呼叫 store 的 login）
 const handleLogin = async () => {
-  // try { await authStore.login(email.value, password.value); 跳轉首頁 }
   if (!validateForm()) {
     return;
   }
@@ -138,7 +137,7 @@ const handleRegister = async () => {
     return;
   }
   try {
-    await authStore.register({ name: name.value, email: email.value, password: password.value });
+    await authStore.register({ name: name.value, email:email.value, password:password.value});
     // 取得 redirect 參數，若無則預設跳轉到 '/profile'
     const redirectPath = route.query.redirect || '/profile';
     router.push(redirectPath); // 註冊成功後跳轉到指定頁面
