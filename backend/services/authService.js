@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const AppError = require('../utils/AppError');
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET || 'secret', { expiresIn: '7d' });
@@ -8,57 +9,50 @@ const generateToken = (id) => {
 
 exports.register = async (email, password, name) => {
   const existingUser = await User.findOne({ email });
-  if (existingUser) throw new Error('Email already exists');
+  if (existingUser) throw new AppError('Email already exists', 400);
   const user = await User.create({ email, password, name });
   return { user: { id: user._id, email: user.email, name: user.name }, token: generateToken(user._id) };
 };
 
 exports.login = async (email, password) => {
   const user = await User.findOne({ email });
-  if (!user) throw new Error('Invalid credentials');
+  if (!user) throw new AppError('Invalid credentials', 401);
   const isMatch = await user.comparePassword(password);
-  if (!isMatch) throw new Error('Invalid credentials');
+  if (!isMatch) throw new AppError('Invalid credentials', 401);
   return { user: { id: user._id, email: user.email, name: user.name }, token: generateToken(user._id) };
 };
 
 exports.updateUser = async (userId, updateData) => {
   const user = await User.findById(userId);
-  if (!user) throw new Error('使用者不存在');
+  if (!user) throw new AppError('使用者不存在', 404);
 
-  const updateFields = {}; // ✅ 定義要更新的欄位物件
-
-  // 處理姓名更新
+  // 更新姓名（若有提供且不同）
   if (updateData.name !== undefined && updateData.name !== user.name) {
-    updateFields.name = updateData.name;
+    user.name = updateData.name;
   }
 
-  // 處理密碼更新
-  if (updateData.password !== undefined && updateData.password.trim() !== '') {
+  // 更新密碼（若有提供且非空）
+  if (updateData.password && updateData.password.trim() !== '') {
     // 檢查是否與舊密碼相同
     const isSame = await bcrypt.compare(updateData.password, user.password);
     if (isSame) {
-      throw new Error('新密碼不能與舊密碼相同');
+      throw new AppError('新密碼不能與舊密碼相同', 400);
     }
-    // 手動加密新密碼
-    const salt = await bcrypt.genSalt(10);
-    updateFields.password = await bcrypt.hash(updateData.password, salt);
+    // 賦值，pre('save') 會自動加密
+    user.password = updateData.password;
   }
 
-  // 如果沒有任何欄位要更新，直接回傳使用者資料（不含密碼）
-  if (Object.keys(updateFields).length === 0) {
+  // 如果沒有任何欄位被修改，直接回傳使用者資料（不含密碼）
+  if (!user.isModified()) {
     const userObj = user.toObject();
     delete userObj.password;
     return userObj;
   }
 
-  // 執行更新（使用 updateOne 直接操作資料庫，避開 Mongoose 的 pre('save') 鉤子）
-  await User.updateOne({ _id: userId }, { $set: updateFields });
+  // 儲存變更（觸發驗證與加密）
+  await user.save();
 
-  // 組合更新後的資料回傳
-  const updatedUser = {
-    ...user.toObject(),
-    ...updateFields
-  };
-  delete updatedUser.password;
-  return updatedUser;
+  const userObj = user.toObject();
+  delete userObj.password;
+  return userObj;
 };

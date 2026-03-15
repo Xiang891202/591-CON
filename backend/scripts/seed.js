@@ -1,54 +1,58 @@
 // scripts/seed.js
 const path = require('path');
-const fs = require('fs');
 const mongoose = require('mongoose');
 const logger = require('../utils/logger');
+const { faker } = require('@faker-js/faker');
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
-
-// 檢查 .env 檔案是否存在與內容（可選）
-// const envPath = path.join(__dirname, '../.env');
-// console.log('📄 檔案是否存在:', fs.existsSync(envPath));
-// if (fs.existsSync(envPath)) {
-//   console.log('📄 檔案內容:\n', fs.readFileSync(envPath, 'utf8'));
-// }
-// console.log('🔑 MONGODB_URI 值:', process.env.MONGODB_URI);
 
 const Product = require('../models/Product');
 
-const sampleProducts = [
-  { name: '信義區豪華公寓', price: 10, category: 'apartment', image: '...', description: '...', lat: 25.0330, lng: 121.5654 },
-  { name: '大安區溫馨小屋', price: 3, category: 'house', image: '...', description: '...', lat: 25.0660, lng: 121.5330 },
-  { name: '板橋電梯大樓', price: 2.5, category: 'apartment', image: '...', description: '...', lat: 24.9160, lng: 121.4330 },
-  { name: '中山區時尚套房', price: 4.2, category: 'house', image: '...', description: '近捷運中山站', lat: 25.0500, lng: 121.5200 },
-];
+// 商品分類選項
+const categories = ['apartment', 'house', 'condo', 'studio', 'office'];
+
+// 隨機產生單一商品
+const generateProduct = () => {
+  const name = faker.location.street() + ' ' + faker.helpers.arrayElement(['豪宅', '公寓', '小屋', '套房', '別墅']);
+  const description = faker.lorem.paragraph();
+  const price = faker.number.float({ min: 1, max: 20, precision: 0.1 }); // 萬/月
+  const category = faker.helpers.arrayElement(categories);
+  const stock = faker.number.int({ min: 0, max: 50 });
+  // 固定尺寸 300x200 的圖片
+  const images = Array.from({ length: faker.number.int({ min: 1, max: 5 }) }, () => 
+    `https://picsum.photos/300/200?random=${Math.floor(Math.random() * 10000)}`
+  );
+  const lat = faker.location.latitude({ min: 21.9, max: 25.3 });
+  const lng = faker.location.longitude({ min: 119.5, max: 122.0 });
+
+  return {
+    name,
+    description,
+    price,
+    category,
+    stock,
+    images,
+    lat,
+    lng,
+  };
+};
 
 const seedDatabase = async () => {
   try {
-    // 若 process.env.MONGODB_URI 仍為 undefined，可暫時改用硬編碼連線字串（如下註解）
-    // const MONGODB_URI = 'mongodb+srv://591-CON:591CON@cluster0.jm8sjcd.mongodb.net/?appName=Cluster0';
-    // await mongoose.connect(MONGODB_URI);
     await mongoose.connect(process.env.MONGODB_URI);
     logger.info('✅ 已連線到 MongoDB Atlas');
 
-    for (const item of sampleProducts) {
-      await Product.updateOne(
-        { name: item.name },
-        {
-          $set: {
-            price: item.price,
-            category: item.category,
-            image: item.image,
-            description: item.description,
-            lat: item.lat,
-            lng: item.lng
-          }
-        },
-        { upsert: true }
-      );
-      logger.info(`✅ 已更新/插入商品：${item.name}`);
+    // 刪除現有所有商品 (可選，根據需求決定是否保留)
+    await Product.deleteMany({});
+    logger.info('🗑️ 已清空 products 集合');
+
+    const products = [];
+    for (let i = 0; i < 100; i++) {
+      products.push(generateProduct());
     }
 
-    logger.info('📦 資料更新完成');
+    await Product.insertMany(products);
+    logger.info(`📦 已成功插入 ${products.length} 筆商品資料`);
+
     await mongoose.connection.close();
     logger.info('🔌 資料庫連線已關閉');
   } catch (error) {

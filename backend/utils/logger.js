@@ -1,10 +1,9 @@
 // utils/logger.js
-const info = (msg) => {
-  console.log(`[INFO] ${new Date().toISOString()} - ${msg}`);
+const info = (...args) => {
+  console.log(`[INFO] ${new Date().toISOString()} -`, ...args);
 };
-
-const error = (msg) => {
-  console.error(`[ERROR] ${new Date().toISOString()} - ${msg}`);
+const error = (...args) => {
+  console.error(`[ERROR] ${new Date().toISOString()} -`, ...args);
 };
 
 module.exports = { info, error };

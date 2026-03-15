@@ -1,12 +1,17 @@
 <template>
   <div class="product-card" @click="goToDetail">
-    <img :src="product.images?.[0] || '/default-image.jpg'" :alt="product.name" />
-    <h3>{{ product.name }}</h3>
-    <p>💰 {{ product.price }} 萬/月</p>
-    <!-- 收藏按鈕先隱藏，待後端實作後再啟用 -->
-    <button @click.stop="handleFavoriteClick" :class="{ favorited: isFavorited }">
-      {{ isFavorited ? '❤️' : '🤍' }}
-    </button>
+    <!-- 左側圖片區 -->
+    <div class="card-image">
+      <img :src="product.images?.[0] || '/default-image.jpg'" :alt="product.name" />
+    </div>
+    <!-- 右側資訊區 -->
+    <div class="card-info">
+      <h3>{{ product.name }}</h3>
+      <p class="price">💰 {{ formattedPrice }} 萬/月</p>
+      <button @click.stop="handleFavoriteClick" :class="{ favorited: isFavorited }">
+        {{ isFavorited ? '❤️' : '🤍' }}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -32,6 +37,10 @@ const isFavorited = computed(() => {
   return productStore.isFavorited(props.product._id);
 });
 
+const formattedPrice = computed(() => {
+  return props.product.price.toFixed(1); // 保留一位小數
+});
+
 const handleFavoriteClick = async () => {
   if (!authStore.isLoggedIn) {
     router.push({ name: 'auth', query:{ redirect: router.currentRoute.value.fullPath}});
@@ -49,16 +58,62 @@ const goToDetail = () => {
 
 <style scoped>
 .product-card {
+  display: flex;
   border: 1px solid #ddd;
-  padding: 1rem;
   border-radius: 8px;
-  text-align: center;
+  overflow: hidden;
+  cursor: pointer;
+  width: 100%; /* 佔滿父容器寬度 */
+  background-color: #fff;
+  transition: box-shadow 0.2s;
 }
-.product-card img {
-  max-width: 100%;
-  height: auto;
+.product-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card-image {
+  flex-shrink: 0;
+  width: 150px;
+  height: 120px;
+}
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-info {
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+.card-info h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+.card-info .price {
+  font-weight: bold;
+  color: #e67e22;
+  margin: 0;
+}
+button {
+  align-self: flex-start;
+  padding: 5px 12px;
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  margin-top: 0.25rem;
 }
 button.favorited {
-  color: red;
+  background-color: #ffcccc;
+  border-color: #ff0000;
+  color: #c00;
 }
 </style>

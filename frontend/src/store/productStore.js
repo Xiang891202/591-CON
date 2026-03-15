@@ -14,6 +14,12 @@ export const useProductStore = defineStore('product', {
   state: () => ({
     products: [],
     // currentProduct: null,
+    // ===== 分頁相關狀態 =====
+    currentPage: 1,
+    totalPages: 1,
+    totalItems: 0,
+    perPage: 10,
+
     favorites: [],
     // loading: false,
     // ===== 取得單一商品用於商品詳細頁 =====
@@ -46,12 +52,33 @@ export const useProductStore = defineStore('product', {
       try {
         const { data } = await api.get('/products', { params });
         this.products = data.data?.products || data.products || [];
+        const resData = data.data || data;
+        this.products = resData.products || [];
+        this.totalItems = resData.total || 0;
+        this.currentPage = resData.page || 1;
+        this.perPage = resData.limit || 10;
+        this.totalPages = resData.totalPages || 1;
       } catch (error) {
         console.error('取得商品列表失敗', error);
       } finally {
         this.productsLoading = false;
       }
     },
+
+    //切換畫面用
+    async goToPage(page){
+      if(page < 1 || page > this.totalPages) return;
+      // 可保留當前篩選條件（例如從 route query 或 filter 狀態取得）
+      // 這裡簡單示範，實務上可能需要結合 filter 參數
+      await this.fetchProducts({ page, limit: this.perPage });
+    },
+
+    // 更新每頁筆數
+    async setPerPage(limit) {
+      this.perPage = limit;
+      await this.fetchProducts({ page: 1, limit });
+    },
+  
 
     async fetchProductById(id) {
       this.productDetailLoading = true;

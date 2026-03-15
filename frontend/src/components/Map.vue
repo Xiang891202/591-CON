@@ -68,7 +68,7 @@ watch(() => productStore.mapProducts, (newProperties) => {
     if (!prop.lat || !prop.lng) return;
     const marker = L.marker([prop.lat, prop.lng]);
     // 彈出視窗顯示商品名稱與價格
-    marker.bindPopup(`<b>${prop.name || prop.title}</b><br>價格: ${prop.price}`);
+    marker.bindPopup(`<b>${prop.name}</b><br>價格: ${prop.price} 萬/月`);
     marker.on('click', () => {
       productStore.setActiveProductId(prop._id);
       // 滾動左側商品（由 MapView 監聽 activeProductId 處理）

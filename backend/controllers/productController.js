@@ -18,10 +18,7 @@ exports.getProductById = asyncHandler(async (req, res,next) => {
       return res.status(404).json({ success: false, message: '商品不存在' });
     }
       res.json({ success: true, data: product, message: '取得商品資訊成功' });
-   {
-    next(error);
-  }
-});;
+});
 
 exports.getProducts = asyncHandler(async (req, res) => {
   // 從 req.query 取出所有參數

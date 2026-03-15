@@ -12,9 +12,10 @@
   <select v-model="filters.category" @change="emitFilter">
     <option value="">所有類別</option>
     <option value="apartment">公寓</option>
-    <option value="house">套房</option>
-  <!-- 若後端沒有「雅房」資料，可先保留但不會有結果 -->
-    <option value="room">雅房</option>
+    <option value="house">透天厝</option>
+    <option value="condo">電梯大樓</option>
+    <option value="studio">套房</option>
+    <option value="office">辦公室</option>
   </select>
 
     <!-- 價格範圍 -->
