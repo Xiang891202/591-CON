@@ -116,6 +116,7 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { debounce } from 'lodash-es';
+// import { uploadImages } from '../utils/uploadImages';
 import { api } from'@/store/adminStore';
 
 const props = defineProps({
