@@ -4,6 +4,9 @@
     <nav>
       <router-link to="/">首頁</router-link> |
       <router-link to="/map">地圖找房</router-link> |
+      <router-link v-if="authStore.user?.role === 'admin'" to="/admin/products">
+        商品管理
+      </router-link>
       <!-- ⚠️ 你需要自行實作：根據登入狀態顯示使用者名稱/登出按鈕 或 登入連結 -->
       <template v-if="authStore.isLoggedIn"> <!-- 此處需改為實際登入狀態 -->
         <router-link to="/profile" class="profile-link">

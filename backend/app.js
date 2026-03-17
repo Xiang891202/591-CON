@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const favoriteRoutes = require('./routes/favoriteRoutes')
 require('dotenv').config()
 // const connectDB = require('./config/db') // 連線資料庫
 
@@ -12,7 +13,7 @@ const app = express()
 
 app.use(cors()) // 允許跨域（開發用）
 app.use(express.json())
-app.use('/api/favorites', require('./routes/favoriteRoutes'));
+app.use('/api/favorites', favoriteRoutes);
 
 app.get('/', (req, res) => {
   res.send('🚀 後端 API 伺服器運作中，請使用 /api 相關端點');
@@ -21,6 +22,8 @@ app.get('/', (req, res) => {
 // 路由註冊
 app.use('/api/auth', authRoutes)
 app.use('/api/products', productRoutes)
+app.use('/api/admin/products', require('./routes/adminProductRoutes')); // 新增這行
+
 
 //404處理
 app.use((req, res) => {

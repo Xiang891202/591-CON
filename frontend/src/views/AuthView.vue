@@ -15,6 +15,9 @@
         還沒有帳號？
         <a href="#" @click.prevent="toggleMode">立即註冊</a>
       </p>
+      <p>
+        管理員 test@gmail.com/123456
+      </p>
     </div>
     <div v-else>
       <h2>註冊</h2>

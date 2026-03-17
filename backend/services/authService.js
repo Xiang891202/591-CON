@@ -11,7 +11,7 @@ exports.register = async (email, password, name) => {
   const existingUser = await User.findOne({ email });
   if (existingUser) throw new AppError('Email already exists', 400);
   const user = await User.create({ email, password, name });
-  return { user: { id: user._id, email: user.email, name: user.name }, token: generateToken(user._id) };
+  return { user: { id: user._id, email: user.email, name: user.name, role: user.role }, token: generateToken(user._id) };
 };
 
 exports.login = async (email, password) => {
@@ -19,7 +19,7 @@ exports.login = async (email, password) => {
   if (!user) throw new AppError('Invalid credentials', 401);
   const isMatch = await user.comparePassword(password);
   if (!isMatch) throw new AppError('Invalid credentials', 401);
-  return { user: { id: user._id, email: user.email, name: user.name }, token: generateToken(user._id) };
+  return { user: { id: user._id, email: user.email, name: user.name, role: user.role, }, token: generateToken(user._id) };
 };
 
 exports.updateUser = async (userId, updateData) => {

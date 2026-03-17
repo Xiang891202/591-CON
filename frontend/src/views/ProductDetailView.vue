@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, watch, onUnmounted } from 'vue';
+import { ref, computed, onMounted, watch, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useProductStore } from '../store/productStore';
 import { useAuthStore } from '../store/authStore';
@@ -63,6 +63,7 @@ const authStore = useAuthStore();
 const product = computed(() => productStore.currentProduct);
 
 let mapInstance = null;
+let isMounted = ref(true);
 
 // 初始化地圖
 const initMap = () => {
@@ -104,16 +105,25 @@ const destroyMap = () => {
 
 // 監聽商品載入完成，初始化地圖
 onMounted(() => {
+  isMounted.value = true;
   if (product.value) {
-    setTimeout(() => initMap(), 100);
+    setTimeout(() => {
+      if (isMounted.value) initMap();
+    }, 100);
   }
 });
 
-// 商品資料變化時重新初始化
-watch(product, (newVal, oldVal) => {
+// onUnmounted(() => {
+//   isMounted.value = false;
+//   destroyMap();
+// });
+
+watch(product, (newVal) => {
   if (newVal && newVal.lat && newVal.lng) {
-    destroyMap();               // 先銷毀舊地圖
-    setTimeout(() => initMap(), 100);
+    destroyMap();
+    setTimeout(() => {
+      if (isMounted.value) initMap();
+    }, 100);
   }
 });
 

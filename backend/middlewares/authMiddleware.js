@@ -32,7 +32,6 @@ const protect = asyncHandler(async (req, res, next) => {
     
     req.user = user;
     next(); // 成功後呼叫 next，並立即返回，避免執行後續代碼
-    return;
   } catch (error) {
     logger.error('❌ jwt 驗證失敗:', error.message);
     res.status(401);

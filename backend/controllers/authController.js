@@ -16,7 +16,7 @@ exports.login = asyncHandler(async (req, res) => {
 
 exports.updateProfile = asyncHandler(async (req, res) => {
   const updatedUser = await authService.updateUser(req.user.id, req.body)
-  res.json({ success: true, data: updatedUser })
+  res.json(successResponse(updatedUser, '個人資料更新成功'));
 })
 
 // controllers/authController.js (在原有內容後新增)
@@ -26,5 +26,7 @@ exports.updateProfile = asyncHandler(async (req, res) => {
 exports.getMe = asyncHandler(async (req, res) => {
   // 假設 req.user 已存在
   const user = req.user;
+  // authMiddleware.js
+  // req.user = await User.findById(decoded.id).select('-password');
   res.json(successResponse({ user }, '取得使用者資料成功'));
 });

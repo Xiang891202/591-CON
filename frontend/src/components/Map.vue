@@ -10,6 +10,7 @@ import 'leaflet.markercluster/dist/leaflet.markercluster.js';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { useProductStore } from '@/store/productStore';
+import { debounce } from '../utils/debounce';
 
 // 修正 Leaflet 預設圖標路徑問題
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -22,13 +23,13 @@ let map = null;
 let markerClusterGroup = null;
 
 //防斗
-const debounce = (fn, delay) => {
-  let timer = null;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => fn(... args), delay);
-  };
-};
+// const debounce = (fn, delay) => {
+//   let timer = null;
+//   return (...args) => {
+//     clearTimeout(timer);
+//     timer = setTimeout(() => fn(... args), delay);
+//   };
+// };
 
 // 初始化地圖
 onMounted(() => {

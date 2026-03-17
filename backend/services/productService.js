@@ -71,3 +71,7 @@ exports.getPropertiesInBounds = async (bounds) => {
   return results;
 };
 
+// 管理員專用：取得所有商品（可能包含下架商品）
+exports.getAdminProducts = async () => {
+  return await Product.find({});
+};

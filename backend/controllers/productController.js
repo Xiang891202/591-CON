@@ -1,3 +1,4 @@
+const Product = require('../models/Product');
 const productService = require('../services/productService');
 const asyncHandler = require('../middlewares/asyncHandler');
 const { successResponse } = require('../utils/responseHelper');
@@ -10,6 +11,8 @@ const parseSort = (sortString) => {
   const sortField = sortString.replace(/^-/, '');
   return { [sortField]: sortOrder };
 };
+
+
 
 // @desc    取得單一商品（供商品詳細頁使用）& 取出商品ID
 exports.getProductById = asyncHandler(async (req, res,next) => {
@@ -67,6 +70,11 @@ exports.getProducts = asyncHandler(async (req, res) => {
 
 //////////////////////////////////////////////////
 
+exports.getAdminProducts = asyncHandler(async (req, res) => {
+  const products = await productService.getAdminProducts();
+  res.json(successResponse(products, '取得商品列表成功'));
+});
+
 // @desc    建立商品 (管理員)
 // @route   POST /api/products
 exports.createProduct = asyncHandler(async (req, res) => {
@@ -115,3 +123,6 @@ exports.getPropertiesInBounds = asyncHandler(async (req, res) => {
   res.json(successResponse(properties, '取得地圖物件成功'));
 });
 
+
+
+console.log('=== productController loaded, getAdminProducts exists:', !!exports.getAdminProducts);

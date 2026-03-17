@@ -21,6 +21,9 @@ export const useProductStore = defineStore('product', {
     perPage: 10,
 
     favorites: [],
+    //減少productcard的 收藏系統依賴
+    favoriteIds: new Set(),
+
     // loading: false,
     // ===== 取得單一商品用於商品詳細頁 =====
     currentProduct: null,
@@ -51,7 +54,6 @@ export const useProductStore = defineStore('product', {
       this.productsLoading = true;
       try {
         const { data } = await api.get('/products', { params });
-        this.products = data.data?.products || data.products || [];
         const resData = data.data || data;
         this.products = resData.products || [];
         this.totalItems = resData.total || 0;
@@ -100,6 +102,7 @@ export const useProductStore = defineStore('product', {
       try {
         const { data } = await api.get('/favorites');
         this.favorites = data.data?.favorites || data.favorites || [];
+        this.favoriteIds = new Set(this.favorites.map(f => f.product?._id || f._id));
       } catch (error) {
         console.error('取得收藏列表失敗', error);
       } finally {
@@ -122,6 +125,7 @@ export const useProductStore = defineStore('product', {
         const favId = f.product?._id || f._id;
         return String(favId) !== String(productId);
       });
+      this.favoriteIds.delete(productId);
     } else {
       await api.post('/favorites', { productId });
       // const newFavorite = (await api.get(`/favorites/${productId}`)).data;
@@ -166,11 +170,7 @@ export const useProductStore = defineStore('product', {
 
   getters: {
     isFavorited: (state) => (productId) => {
-      return state.favorites.some(f => {
-        const favoriteProductId = f.product?._id || f._id; 
-        // console.log('🔍 比較:', favoriteProductId, productId);
-        return String(favoriteProductId) === String(productId);
-      });
+      return state.favoriteIds.has(productId);
     }
   }
 });
