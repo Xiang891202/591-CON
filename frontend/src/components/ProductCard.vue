@@ -38,7 +38,9 @@ const isFavorited = computed(() => {
 });
 
 const formattedPrice = computed(() => {
-  return props.product.price.toFixed(1); // 保留一位小數
+  const price = props.product.price ?? 0;
+  const priceInTenThousand = price / 10000;
+  return priceInTenThousand.toFixed(1) ?? '0.0'; // 保留一位小數
 });
 
 const handleFavoriteClick = async () => {

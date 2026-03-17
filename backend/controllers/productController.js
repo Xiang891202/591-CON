@@ -39,9 +39,14 @@ exports.getProducts = asyncHandler(async (req, res) => {
   const filters = {};
   if (category) filters.category = category;
   if (keyword) filters.keyword = keyword;
-  if (minPrice || maxPrice) {
-    filters.minPrice = minPrice ? Number(minPrice) : undefined;
-    filters.maxPrice = maxPrice ? Number(maxPrice) : undefined;
+  // 检查 minPrice 和 maxPrice 是否真的存在（非 undefined 且非空字符串）
+  if (minPrice !== undefined || maxPrice !== undefined) {
+      if (minPrice !== undefined && minPrice !== '') {
+          filters.minPrice = Number(minPrice);
+      }
+      if (maxPrice !== undefined && maxPrice !== '') {
+          filters.maxPrice = Number(maxPrice);
+      }
   }
 
   // 組成選項物件（排序、分頁）
@@ -77,9 +82,10 @@ exports.getAdminProducts = asyncHandler(async (req, res) => {
 
 // @desc    建立商品 (管理員)
 // @route   POST /api/products
-exports.createProduct = asyncHandler(async (req, res) => {
-  const product = await productService.createProduct(req.body);
-  res.status(201).json(successResponse({ product }, '商品建立成功'));
+exports.createProduct = asyncHandler(async (req, res,next) => {
+  const productData = req.body;
+  const newProduct = await productService.createProduct(productData);
+  res.status(201).json(successResponse({ product: newProduct }, '商品建立成功'));
 });
 
 // @desc    更新商品 (管理員)

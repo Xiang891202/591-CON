@@ -26,16 +26,10 @@ const productSchema = new mongoose.Schema(
       min: 0,
       default: 0,
     },
-    images: [String],
-    // 可依需求擴充欄位
-    lat: {
-      type: Number,
-      required: [true, '緯度不能為空'],
-    },
-    lng: {
-      type: Number,
-      required: [true, '經度不能為空'],
-    },
+    images: [String],           // 改为数组
+    address: String,
+    lat: Number,                // 若允许不填，请移除 required
+    lng: Number,
   },
   {
     timestamps: true,

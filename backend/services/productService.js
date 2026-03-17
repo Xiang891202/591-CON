@@ -16,11 +16,11 @@ exports.getProducts = async (filters = {}, options = {}) => {
   if (filters.category) query.category = filters.category;
   if (filters.keyword) query.name = { $regex: filters.keyword, $options: 'i' };
   // 新增價格範圍篩選範例
-  if (filters.minPrice || filters.maxPrice) {
+  if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
     query.price = {};
-    if (filters.minPrice) query.price.$gte = Number(filters.minPrice);
-    if (filters.maxPrice) query.price.$lte = Number(filters.maxPrice);
-  }
+    if (filters.minPrice !== undefined) query.price.$gte = filters.minPrice;
+    if (filters.maxPrice !== undefined) query.price.$lte = filters.maxPrice;
+}
 
   //排序/分頁
   const products = await Product.find(query)
@@ -36,7 +36,8 @@ exports.getProducts = async (filters = {}, options = {}) => {
 
 // 建立商品
 exports.createProduct = async (productData) => {
-  return await Product.create(productData);
+  const product = await Product.create(productData);
+  return product;
 };
 
 // 更新商品

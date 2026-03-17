@@ -5,6 +5,7 @@ const {
   getProductById,
   updateProduct,
   deleteProduct,
+  createProduct,
   // 若有新增商品，再加入 createProduct
 } = require('../controllers/productController');
 const { protect } = require('../middlewares/authMiddleware');
@@ -26,6 +27,6 @@ router.put('/:id', updateProduct);
 router.delete('/:id', deleteProduct);
 
 // 若有新增商品，可加入 POST /
-// router.post('/', createProduct);
+router.post('/', createProduct);
 
 module.exports = router;

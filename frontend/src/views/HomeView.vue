@@ -26,7 +26,7 @@
       >
         下一頁
       </button>
-      <select v-model="perPage" @change="changePerPage">
+      <select v-model="perPage">
         <option :value="10">10 筆/頁</option>
         <option :value="20">20 筆/頁</option>
         <option :value="50">50 筆/頁</option>
@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useProductStore } from '@/store/productStore'
 import FilterBar from '../components/FilterBar.vue'
 import ProductCard from '../components/ProductCard.vue'
@@ -44,7 +44,7 @@ import { useAuthStore } from '@/store/authStore'
 
 const productStore = useProductStore()
 const authStore = useAuthStore()
-const perPage = ref(productStore.perPage);
+// const perPage = ref(productStore.perPage);
 
 //測試用
 // onMounted(() => {
@@ -75,9 +75,10 @@ const handleFilter = (filters) => {
 }
 
 // 切換每頁筆數
-const changePerPage = () => {
-  productStore.setPerPage(perPage.value);
-};
+const perPage = computed({
+  get: () => productStore.perPage,
+  set: (val) => productStore.setPerPage(val)
+});
 </script>
 
 <style scoped>

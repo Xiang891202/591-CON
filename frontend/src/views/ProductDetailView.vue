@@ -20,7 +20,7 @@
 
     <!-- 基本資訊 -->
     <div class="info">
-      <p class="price">💰 {{ product.price }} 萬/月</p>
+      <p class="price">💰 {{ displayPrice }} 萬/月</p>
       <p class="category">🏷️ 分類：{{ product.category }}</p>
       <p class="description">📝 {{ product.description }}</p>
     </div>
@@ -64,6 +64,11 @@ const product = computed(() => productStore.currentProduct);
 
 let mapInstance = null;
 let isMounted = ref(true);
+
+const displayPrice = computed(() => {
+  const price = product.value?.price ?? 0;
+  return (price / 10000).toFixed(1);
+});
 
 // 初始化地圖
 const initMap = () => {

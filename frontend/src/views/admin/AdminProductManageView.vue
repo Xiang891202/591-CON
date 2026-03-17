@@ -3,6 +3,8 @@
 <template>
   <div class="admin-product-manage">
     <h1>商品管理</h1>
+    <!-- 新增商品按鈕（可留待後續實作） -->
+    <button @click="goToCreate">+ 新增商品</button>
     <!-- 篩選器元件（重用） -->
     <FilterBar @filter="handleFilter" />
 
@@ -17,8 +19,6 @@
       />
     </div>
 
-    <!-- 新增商品按鈕（可留待後續實作） -->
-    <button @click="goToCreate">+ 新增商品</button>
   </div>
 </template>
 
@@ -34,18 +34,43 @@ const adminStore = useAdminStore();
 
 const filter = ref({});
 const filteredProducts = computed(() => {
-  // 根據 filter 過濾 adminStore.products
-  // 簡單範例：若無篩選條件則回傳全部
-  let result = adminStore.products; // 宣告 result 並初始化
-  if (filter.value.minPrice) {
-    result = result.filter(p => p.price >= filter.value.minPrice);
+  let result = adminStore.products;
+
+  // 关键字搜索
+  if (filter.value.keyword) {
+    const keyword = filter.value.keyword.toLowerCase();
+    result = result.filter(p => p.name.toLowerCase().includes(keyword));
   }
-  if (filter.value.maxPrice) {
-    result = result.filter(p => p.price <= filter.value.maxPrice);
+
+  // 价格范围过滤（修复）
+  if (filter.value.minPrice !== '' && !isNaN(filter.value.minPrice)) {
+    result = result.filter(p => p.price >= Number(filter.value.minPrice));
   }
+  if (filter.value.maxPrice !== '' && !isNaN(filter.value.maxPrice)) {
+    result = result.filter(p => p.price <= Number(filter.value.maxPrice));
+  }
+
+  // 类别过滤
   if (filter.value.category) {
     result = result.filter(p => p.category === filter.value.category);
   }
+
+  // 排序
+  if (filter.value.sort) {
+    result = [...result];
+    switch (filter.value.sort) {
+      case 'price':
+        result.sort((a, b) => a.price - b.price);
+        break;
+      case '-price':
+        result.sort((a, b) => b.price - a.price);
+        break;
+      case '-createdAt':
+        result.sort((a, b) => getTimestampFromId(b._id) - getTimestampFromId(a._id));
+        break;
+    }
+  }
+
   return result;
 });
 
@@ -58,9 +83,11 @@ const goToDetail = (id) => {
 };
 
 const goToCreate = () => {
-  // 可導向新增頁面，目前尚未實作
-  alert('新增商品功能開發中');
+  router.push('/admin/products/create')
 };
+
+const getTimestampFromId = (id) => new Date(parseInt(id.substring(0, 8), 16) * 1000);
+// 排序时：result.sort((a, b) => getTimestampFromId(b._id) - getTimestampFromId(a._id));
 
 onMounted(() => {
   adminStore.fetchAllProducts();

@@ -19,7 +19,8 @@ const routes = [
   { path: '/product/:id', name: 'productDetail', component: () => import('@/views/ProductDetailView.vue'), props: true },
   { path: '/admin/products', name: 'AdminProductManage', component: () => import('@/views/admin/AdminProductManageView.vue'), meta: { requiresAdmin: true }},
   { path: '/admin/products/:id', name: 'AdminProductDetail', component: () => import('@/views/admin/AdminProductDetailView.vue'), meta: { requiresAdmin: true }},
-  { path: '/admin/products/:id/edit', name: 'AdminProductEdit', component: () => import('@/views/admin/AdminProductEditView.vue'), meta: { requiresAdmin: true}}
+  { path: '/admin/products/:id/edit', name: 'AdminProductEdit', component: () => import('@/views/admin/AdminProductEditView.vue'), meta: { requiresAdmin: true}},
+  { path: '/admin/products/create', name: 'AdminProductCreate', component: () => import('@/views/admin/AdminProductCreateView.vue'), meta: { requiresAdmin: true}}
 ];
 
 const router = createRouter({

@@ -8,6 +8,9 @@ const addFavorite = async (userId, productId) => {
   if (!product) {
     throw new AppError('商品不存在', 404);
   }
+  // 检查是否已收藏（移入函数内）
+  const existing = await Favorite.findOne({ user: userId, product: productId });
+  if (existing) throw new AppError('已收藏此商品', 409);
   return await Favorite.create({ user: userId, product: productId });
 };
 

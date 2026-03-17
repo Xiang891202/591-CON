@@ -22,14 +22,14 @@
     <input
       type="number"
       v-model.number="filters.minPrice"
-      placeholder="最低價格"
+      placeholder="最低價格--元"
       @input="emitFilter"
     />
     <span> - </span>
     <input
       type="number"
       v-model.number="filters.maxPrice"
-      placeholder="最高價格"
+      placeholder="最高價格--元"
       @input="emitFilter"
     />
 

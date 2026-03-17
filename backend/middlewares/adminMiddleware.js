@@ -7,6 +7,10 @@ const asyncHandler = require('./asyncHandler');
 
 const admin = (req, res, next) => {
   if(!req.user) {
+    // 示例
+    const error = new Error('未提供 Token，請先登入');
+    error.statusCode = 401;
+    throw error;
     return res.status(401).json({ success: false, message: '未授權，請先登入' })
   }
   if (req.user && req.user.role === 'admin') {

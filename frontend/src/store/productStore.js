@@ -111,14 +111,9 @@ export const useProductStore = defineStore('product', {
     },
 
   async toggleFavorite(productId) {
-    const authStore = useAuthStore();
-    if (!authStore.isLoggedIn) return false;
-    try {
-      const isFav = this.favorites.some(f => {
-      const favId = f.product?._id || f._id;
-      return String(favId) === String(productId);
-    });
-
+  // ... 权限检查
+  const isFav = this.favoriteIds.has(productId);
+  try {
     if (isFav) {
       await api.delete(`/favorites/${productId}`);
       this.favorites = this.favorites.filter(f => {
@@ -127,9 +122,11 @@ export const useProductStore = defineStore('product', {
       });
       this.favoriteIds.delete(productId);
     } else {
-      await api.post('/favorites', { productId });
-      // const newFavorite = (await api.get(`/favorites/${productId}`)).data;
-      await this.fetchFavorites(); // 重新获取完整收藏列表，确保数据一致
+      const { data } = await api.post('/favorites', { productId });
+      // 假设后端返回新收藏项的数据结构 { product: { ... } } 或直接是商品对象
+      const newFavorite = data.data; // 根据实际后端调整
+      this.favorites.push(newFavorite);
+      this.favoriteIds.add(productId);
     }
     return true;
   } catch (error) {

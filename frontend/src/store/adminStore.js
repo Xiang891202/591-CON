@@ -46,6 +46,21 @@ export const useAdminStore = defineStore('admin', {
       return data;
     },
     // 可再新增 createProduct 等
+    async createProduct(productData){
+      this.loading = true
+      try {
+        const { data } = await api.post('/admin/products', productData);
+        if(data.success) {
+          this.products.unshift(data.data);
+        }
+        return data;
+      }catch(error) {
+        console.error('新增商品失敗', error);
+        throw error;
+      } finally {
+        this.loading = false
+      }
+    }
   },
 });
 

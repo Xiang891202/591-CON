@@ -19,6 +19,10 @@ export default defineConfig({
         target: 'http://localhost:3000',  // 確認後端埠號是否正確
         changeOrigin: true,
         // rewrite: (path) => path.replace(/^\/api/, '') // 可選：如果後端路由不包含 /api 前綴，則啟用此行
+      },
+      '/uploads':{
+        target: 'http://localhost:3000',
+        changeOrigin: true,
       }
     }
   }
