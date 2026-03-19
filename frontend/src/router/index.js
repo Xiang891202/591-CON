@@ -40,7 +40,13 @@ router.beforeEach(async(to, from, next) => {
 
   // 如果有 token 但 user 尚未載入，先嘗試取得使用者資料
   if(token && !authStore.user){
-    await authStore.fetchMe();
+    try{
+      await authStore.fetchMe();
+    } catch (error){
+        // token 無效，清除 token 並導向登入
+      localStorage.removeItem('token');
+      authStore.logout(); // 若有 logout action
+    }
   }
 
   if(requiresAdmin){

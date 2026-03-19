@@ -10,7 +10,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useAdminStore, api } from '@/store/adminStore';
+import { useAdminStore } from '@/store/adminStore';
+import api from '@/api';
 import ProductForm from '@/components/ProductForm.vue';
 
 const route = useRoute();

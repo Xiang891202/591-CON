@@ -46,9 +46,10 @@
 <script setup>
 import { ref, computed, onMounted, watch, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useAdminStore, api } from '@/store/adminStore';
+import { useAdminStore } from '@/store/adminStore';
 import { useProductStore } from '@/store/productStore'; // 用于收藏
 import { useAuthStore } from '@/store/authStore';
+import api from '@/api';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 

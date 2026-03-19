@@ -1,15 +1,6 @@
-//管理員專屬狀態
-
 // src/store/adminStore.js
 import { defineStore } from 'pinia';
-import axios from 'axios';
-
-const api = axios.create({ baseURL: '/api' });
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+import api from '@/api';  // 修正：import api from '@/api'
 
 export const useAdminStore = defineStore('admin', {
   state: () => ({
@@ -32,7 +23,6 @@ export const useAdminStore = defineStore('admin', {
     async updateProduct(id, formData) {
       const { data } = await api.put(`/admin/products/${id}`, formData);
       if (data.success) {
-        // 更新本地商品資料（或重新 fetch）
         const index = this.products.findIndex(p => p._id === id);
         if (index !== -1) this.products[index] = data.data;
       }
@@ -45,23 +35,21 @@ export const useAdminStore = defineStore('admin', {
       }
       return data;
     },
-    // 可再新增 createProduct 等
-    async createProduct(productData){
-      this.loading = true
+    async createProduct(productData) {
+      this.loading = true;
       try {
         const { data } = await api.post('/admin/products', productData);
-        if(data.success) {
+        if (data.success) {
           this.products.unshift(data.data);
         }
         return data;
-      }catch(error) {
+      } catch (error) {
         console.error('新增商品失敗', error);
         throw error;
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     }
   },
 });
-
-export { api };
+// 移除 export { api };

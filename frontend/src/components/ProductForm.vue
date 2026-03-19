@@ -117,7 +117,7 @@
 import { ref, watch } from 'vue';
 import { debounce } from 'lodash-es';
 // import { uploadImages } from '../utils/uploadImages';
-import { api } from'@/store/adminStore';
+import  api  from'@/api';
 
 const props = defineProps({
   initialData: { type: Object, default: () => ({}) },
@@ -222,32 +222,32 @@ const setMainImage = (index) => {
 const geocodeAddress = async (address) => {
   if (!address) return;
   try {
-    const response = await fetch(`/api/geocode?q=${encodeURIComponent(address)}`);
+    const response = await api.get('/geocode', { params: { q: address } });
     const data = await response.json();
     if (data && data.length > 0) {
       const { lat, lon } = data[0];
       form.value.lat = parseFloat(lat);
       form.value.lng = parseFloat(lon);
     } else {
-      console.warn('地址未找到经纬度');
+      console.warn('地址未找到經緯度');
     }
   } catch (err) {
-    console.error('地理编码失败', err);
+    console.error('地理編碼失敗', err);
   }
 };
 
 const reverseGeocode = async (lat, lng) => {
   if (lat == null || lng == null || isNaN(lat) || isNaN(lng)) return;
   try {
-    const response = await fetch(`/api/geocode?lat=${lat}&lon=${lng}`);
+    const response = await api.get('/geocode', { params: { lat, lon: lng } });
     const data = await response.json();
     if (data && data.display_name) {
       form.value.address = data.display_name;
     } else {
-      console.warn('经纬度未找到地址');
+      console.warn('經緯度未找到地址');
     }
   } catch (err) {
-    console.error('逆地理编码失败', err);
+    console.error('逆地理編碼失敗', err);
   }
 };
 

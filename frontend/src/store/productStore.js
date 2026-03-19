@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import api from '@/api';
 import { useAuthStore } from './authStore';
 
-const api = axios.create({ baseURL: '/api' });
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+// const api = axios.create({ baseURL: '/api' });
+// api.interceptors.request.use((config) => {
+//   const token = localStorage.getItem('token');
   
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+//   if (token) config.headers.Authorization = `Bearer ${token}`;
+//   return config;
+// });
 
 export const useProductStore = defineStore('product', {
   state: () => ({

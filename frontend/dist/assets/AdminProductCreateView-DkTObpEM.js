@@ -1,0 +1,1 @@
+import{a as c,g as s,j as n}from"./index-DE4G3qZO.js";import{u}from"./adminStore-uUgPn4zv.js";import{P as m}from"./ProductForm-bm1Nv506.js";const l={__name:"AdminProductCreateView",setup(d){const o=n(),r=u(),e=async t=>{await r.createProduct(t),o.push("/admin/products")},a=()=>{o.push("/admin/products")};return(t,i)=>(c(),s(m,{onSubmit:e,onCancel:a}))}};export{l as default};
