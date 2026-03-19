@@ -79,4 +79,4 @@ watch(() => productStore.mapProducts, (newProperties) => {
 }, { deep: true });
 </script>
 
-<style lang="sass" src="@/styles/components/map.scss" scoped></style>
+<style lang="sass" src="@/styles/components/Map.scss" scoped></style>
