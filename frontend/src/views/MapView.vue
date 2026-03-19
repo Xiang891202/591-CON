@@ -45,32 +45,4 @@ function scrollToProduct(productId) {
 }
 </script>
 
-<style scoped>
-.map-view {
-  padding: 20px;
-}
-.content {
-  display: flex;
-  gap: 20px;
-  margin-top: 20px;
-}
-.left-panel {
-  width: 30%;
-  max-height: 70vh;
-  overflow-y: auto;
-  padding-right: 10px;
-}
-.right-panel {
-  width: 70%;
-}
-.active {
-  border: 2px solid #42b983;
-  transform: scale(1.02);
-  transition: all 0.2s;
-}
-.no-data {
-  text-align: center;
-  color: #999;
-  padding: 40px 0;
-}
-</style>
+<style lang="scss" src="@/styles/components/MapView.scss" scoped></style>

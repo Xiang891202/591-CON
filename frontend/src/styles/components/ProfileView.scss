@@ -1,0 +1,69 @@
+@import '../variables';
+
+.profile {
+  max-width: 600px;
+  margin: $spacing-4xl auto;
+  padding: 48px $spacing-4xl;
+  background: $background-white;
+  border-radius: 56px;
+  box-shadow: $shadow-xl;
+  text-align: center;
+
+  h1 {
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: $spacing-3xl;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: $text-secondary;
+    margin: $spacing-lg 0;
+    padding: $spacing-md $spacing-xl;
+    background: $background-light;
+    border-radius: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+
+    strong {
+      color: $text-primary;
+      min-width: 80px;
+      text-align: right;
+    }
+  }
+}
+
+button {
+  margin: $spacing-lg $spacing-md 0;
+  padding: $spacing-md $spacing-3xl;
+  border: none;
+  border-radius: $radius-full;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  background-color: $primary;
+  color: white;
+  box-shadow: 0 4px 10px rgba($primary, 0.2);
+
+  &:hover {
+    background-color: $primary-dark;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba($primary, 0.3);
+  }
+}
+
+.logout-btn {
+  background-color: $background-light;
+  color: $text-secondary;
+  box-shadow: none;
+  border: 1px solid $border-light;
+
+  &:hover {
+    background-color: $border-light;
+    box-shadow: none;
+  }
+}

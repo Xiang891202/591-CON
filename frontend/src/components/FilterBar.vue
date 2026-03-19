@@ -84,31 +84,4 @@ const goToFavorites = () => {
 
 </script>
 
-<style scoped>
-.filter-bar {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-  padding: 10px;
-  background: #f5f5f5;
-  border-radius: 8px;
-}
-
-.filter-bar input,
-.filter-bar select,
-.filter-bar button {
-  padding: 8px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-.filter-bar button {
-  background-color: #ff69b4;
-  color: white;
-  cursor: pointer;
-  border: none;
-}
-.filter-bar button:hover {
-  background-color: #ff1493;
-}
-</style>
+<style lang="sass" src="@/styles/components/FilterBar.scss" scoped></style>

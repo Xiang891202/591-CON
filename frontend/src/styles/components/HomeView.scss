@@ -1,0 +1,92 @@
+// src/styles/components/HomeView.scss
+@import '../variables';
+@import '../rwd';
+
+div {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-xl;
+
+  @include xs-only {
+    padding: 0 $spacing-md;
+  }
+}
+
+h1 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: $text-primary;
+  margin-bottom: $spacing-2xl;
+  letter-spacing: -0.02em;
+
+  @include xs-only {
+    font-size: 1.8rem;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+  margin-top: $spacing-2xl;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $spacing-lg;
+  margin-top: 48px;
+  padding: $spacing-2xl 0;
+  flex-wrap: wrap;
+
+  button {
+    padding: $spacing-sm $spacing-2xl;
+    border: 1px solid $border-light;
+    background: white;
+    cursor: pointer;
+    border-radius: $radius-full;
+    font-weight: 500;
+    color: $text-secondary;
+    transition: all 0.2s;
+
+    @include xs-only {
+      padding: $spacing-sm $spacing-lg;
+      font-size: 0.9rem;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: $background-light;
+      border-color: $border-default;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  span {
+    font-size: 1rem;
+    color: $text-muted;
+    @include xs-only {
+      font-size: 0.9rem;
+    }
+  }
+
+  select {
+    padding: $spacing-sm $spacing-xl;
+    border: 1px solid $border-light;
+    border-radius: $radius-full;
+    background: white;
+    font-size: 0.95rem;
+    cursor: pointer;
+
+    @include xs-only {
+      width: 100%;
+      margin-top: $spacing-sm;
+      padding: 0 $spacing-sm;
+    }
+  }
+}

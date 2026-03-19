@@ -81,33 +81,4 @@ const perPage = computed({
 });
 </script>
 
-<style scoped>
-.product-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-top: 20px;
-}
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  margin-top: 30px;
-}
-.pagination button {
-  padding: 8px 16px;
-  border: 1px solid #ddd;
-  background: white;
-  cursor: pointer;
-  border-radius: 4px;
-}
-.pagination button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.pagination select {
-  padding: 8px;
-  border-radius: 4px;
-}
-</style>
+<style lang="scss" src="@/styles/components/HomeView.scss" scoped></style>

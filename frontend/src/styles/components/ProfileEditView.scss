@@ -1,0 +1,112 @@
+@import '../variables';
+
+.profile-edit {
+  max-width: 600px;
+  margin: $spacing-4xl auto;
+  padding: $spacing-4xl $spacing-3xl;
+  background: $background-white;
+  border-radius: 48px;
+  box-shadow: $shadow-xl;
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: $spacing-3xl;
+  }
+}
+
+.form-group {
+  margin-bottom: $spacing-2xl;
+}
+
+label {
+  display: inline-block;
+  width: 100px;
+  font-weight: 600;
+  color: $text-secondary;
+  font-size: 1rem;
+}
+
+input {
+  padding: $spacing-md $spacing-xl;
+  width: calc(100% - 120px);
+  border: 1px solid $border-light;
+  border-radius: $radius-full;
+  background: #fafbfc;
+  transition: all 0.2s;
+  font-size: 1rem;
+
+  &:focus {
+    border-color: $primary;
+    box-shadow: 0 0 0 4px rgba($primary, 0.1);
+    outline: none;
+    background: white;
+  }
+
+  &.readonly-field {
+    background-color: $background-light;
+    cursor: not-allowed;
+    color: $text-muted;
+  }
+}
+
+.hint {
+  margin-left: $spacing-md;
+  color: $text-muted;
+  font-size: 0.9rem;
+}
+
+.actions {
+  margin-top: $spacing-3xl;
+  display: flex;
+  gap: $spacing-lg;
+  justify-content: flex-end;
+
+  button {
+    padding: $spacing-md $spacing-3xl;
+    border: none;
+    border-radius: $radius-full;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &[type="submit"] {
+      background-color: $primary;
+      color: white;
+      box-shadow: 0 4px 10px rgba($primary, 0.2);
+
+      &:hover:not(:disabled) {
+        background-color: $primary-dark;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba($primary, 0.3);
+      }
+    }
+
+    &[type="button"] {
+      background-color: $background-light;
+      color: $text-secondary;
+      border: 1px solid $border-light;
+
+      &:hover:not(:disabled) {
+        background-color: $border-light;
+      }
+    }
+  }
+}
+
+.error {
+  color: #dc2626;
+  font-size: 0.9rem;
+  margin-top: $spacing-xs;
+  display: block;
+}
+
+p.error {
+  margin-top: $spacing-xl;
+  padding: $spacing-md;
+  background-color: #fee2e2;
+  border-radius: $radius-full;
+  text-align: center;
+}

@@ -1,0 +1,43 @@
+// src/styles/_rwd.scss
+
+// 斷點值 (與 Bootstrap 5 一致，業界主流)
+$breakpoint-xs: 0px;      // 超小螢幕 (<576px)
+$breakpoint-sm: 576px;    // 小螢幕 (≥576px)
+$breakpoint-md: 768px;    // 中螢幕 (≥768px)
+$breakpoint-lg: 992px;    // 大螢幕 (≥992px)
+$breakpoint-xl: 1200px;   // 超大螢幕 (≥1200px)
+$breakpoint-xxl: 1400px;  // 特大螢幕 (≥1400px)
+
+// 手機優先 Mixin（常用）
+@mixin sm-up {
+  @media (min-width: $breakpoint-sm) { @content; }
+}
+@mixin md-up {
+  @media (min-width: $breakpoint-md) { @content; }
+}
+@mixin lg-up {
+  @media (min-width: $breakpoint-lg) { @content; }
+}
+@mixin xl-up {
+  @media (min-width: $breakpoint-xl) { @content; }
+}
+@mixin xxl-up {
+  @media (min-width: $breakpoint-xxl) { @content; }
+}
+
+// 特定範圍 Mixin（常用於微調）
+@mixin xs-only {
+  @media (max-width: #{$breakpoint-sm - 0.02px}) { @content; }
+}
+@mixin sm-only {
+  @media (min-width: $breakpoint-sm) and (max-width: #{$breakpoint-md - 0.02px}) { @content; }
+}
+@mixin md-only {
+  @media (min-width: $breakpoint-md) and (max-width: #{$breakpoint-lg - 0.02px}) { @content; }
+}
+@mixin lg-only {
+  @media (min-width: $breakpoint-lg) and (max-width: #{$breakpoint-xl - 0.02px}) { @content; }
+}
+@mixin xl-only {
+  @media (min-width: $breakpoint-xl) and (max-width: #{$breakpoint-xxl - 0.02px}) { @content; }
+}

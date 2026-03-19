@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+
+    /* Vue 專用設定 */
+    "jsx": "preserve",
+    "resolveJsonModule": true,          // 允許匯入 JSON 檔案
+    "isolatedModules": true,
+    "noEmit": true,
+    "types": ["vite/client"],
+
+    /* 模組解析策略 (必須改為 node 或 bundler) */
+    "moduleResolution": "bundler",       // 使用 Vite 建議的 bundler 模式
+    "allowImportingTsExtensions": true,
+    "allowJs": true,                     // 允許引入 .js 檔案
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+
+    /* 路徑別名 */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "src/**/*.js",        // 加入 .js 檔案（如果專案中有 JS）
+    "src/**/*.jsx"
+  ],
+  "exclude": ["node_modules"]
+}

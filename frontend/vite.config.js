@@ -25,5 +25,14 @@ export default defineConfig({
         changeOrigin: true,
       }
     }
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: 
+        `@import "@/styles/variables"; 
+        @import "@/styles/rwd";` // 可選，自動導入變數
+      }
+    }
   }
 })

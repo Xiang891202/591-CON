@@ -152,32 +152,4 @@ const handleRegister = async () => {
 
 </script>
 
-<style scoped>
-.auth-container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-input {
-  padding: 8px;
-  font-size: 16px;
-}
-button {
-  padding: 10px;
-  background-color: #42b983;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-.error {
-  color: red;
-  margin-top: 10px;
-}
-</style>
+<style lang="scss" src="@/styles/components/AuthView.scss" scoped></style>

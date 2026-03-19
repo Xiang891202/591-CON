@@ -1,0 +1,64 @@
+// src/styles/components/FilterBar.scss
+@import '../variables';
+@import '../rwd';
+
+.filter-bar {
+  display: flex;
+  gap: $spacing-md;
+  flex-wrap: wrap;
+  margin-bottom: $spacing-2xl;
+  padding: $spacing-lg $spacing-xl;
+  background: $background-white;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+  border: 1px solid #f0f0f0;
+
+  // 手機版：改為垂直堆疊
+  @include xs-only {
+    flex-direction: column;
+    align-items: stretch;
+    padding: $spacing-md; // 縮小內邊距
+  }
+
+  input,
+  select,
+  button {
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $border-light;
+    border-radius: $radius-full;
+    font-size: 14px;
+    background: white;
+    transition: all 0.2s ease;
+    outline: none;
+    font-family: inherit;
+    flex: 1 1 auto;
+    min-width: 150px; // 桌面版最小寬度
+
+    @include xs-only {
+      flex: 0 0 auto; // 取消伸縮
+      width: 100%;    // 佔滿寬度
+      min-width: 0;   // 清除最小寬度限制
+      margin-bottom: $spacing-xs;
+    }
+  }
+
+  // 收藏按鈕樣式
+  button {
+    background-color: $favorite;
+    color: white;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba($favorite, 0.2);
+
+    &:hover {
+      background-color: $favorite-dark;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba($favorite, 0.3);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}

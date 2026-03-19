@@ -79,11 +79,4 @@ watch(() => productStore.mapProducts, (newProperties) => {
 }, { deep: true });
 </script>
 
-<style scoped>
-.map-container {
-  width: 100%;
-  height: 500px;
-  border-radius: 8px;
-  overflow: hidden;
-}
-</style>
+<style lang="sass" src="@/styles/components/map.scss" scoped></style>

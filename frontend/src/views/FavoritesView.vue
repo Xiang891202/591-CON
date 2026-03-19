@@ -40,34 +40,4 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
-.favorites {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-.favorites-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-top: 20px;
-}
-.empty-message {
-  text-align: center;
-  margin-top: 50px;
-  color: #666;
-}
-
-.back-btn {
-  margin-bottom: 20px;
-  padding: 8px 16px;
-  background-color: #42b983;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.back-btn:hover {
-  background-color: #2c8e6b;
-}
-</style>
+<style lang="scss" src="@/styles/components/FavoritesView.scss" scoped></style>

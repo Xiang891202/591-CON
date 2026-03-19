@@ -46,3 +46,5 @@ const goBack = () => {
   router.push(`/admin/products/${route.params.id}`);
 };
 </script>
+
+<style lang="sass" src="@/styles/components/ProfileEditView.scss" scoped></style>

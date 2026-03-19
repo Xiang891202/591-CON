@@ -94,10 +94,4 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1rem;
-}
-</style>
+<style lang="scss" src="@/styles/components/AdminProductManageView.scss" scoped></style>

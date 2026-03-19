@@ -27,22 +27,4 @@ const handleLogout = () => {
 };
 </script>
 
-<style scoped>
-.profile {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
-}
-.logout-btn {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.logout-btn:hover {
-  background-color: #c82333;
-}
-</style>
+<style lang="scss" src="@/styles/components/ProfileView.scss" scoped></style>

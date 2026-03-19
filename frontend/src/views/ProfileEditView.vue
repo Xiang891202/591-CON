@@ -107,42 +107,4 @@ const handleSubmit = async () => {
 }
 </script>
 
-<style scoped>
-.profile-edit {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
-}
-.form-group {
-  margin-bottom: 1rem;
-}
-label {
-  display: inline-block;
-  width: 80px;
-  font-weight: bold;
-}
-input {
-  padding: 0.5rem;
-  width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-input.readonly-field {
-  background-color: #f5f5f5;
-  cursor: not-allowed;
-}
-.hint {
-  margin-left: 10px;
-  color: #666;
-  font-size: 0.85rem;
-}
-.actions {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
-}
-.error {
-  color: red;
-  font-size: 0.9rem;
-}
-</style>
+<style lang="scss" src="@/styles/components/ProfileEditView.scss" scoped></style>
