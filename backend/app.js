@@ -17,7 +17,7 @@ app.use(cors()) // 允許跨域（開發用）
 app.use(express.json())
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/admin/products', adminProductRoutes);
-app.use('/uploads', express.static('uploads'));
+// app.use('/uploads', express.static('uploads'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 
 app.get('/', (req, res) => {

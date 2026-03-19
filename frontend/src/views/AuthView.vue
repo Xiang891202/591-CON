@@ -16,7 +16,7 @@
         <a href="#" @click.prevent="toggleMode">立即註冊</a>
       </p>
       <p>
-        管理員 test@gmail.com/123456
+        <!-- 管理員 test@gmail.com/123456 -->
       </p>
     </div>
     <div v-else>
